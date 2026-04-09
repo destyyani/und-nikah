@@ -7,625 +7,200 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --terra:    #C1593C;
-    --terra-lt: #E07A58;
-    --forest:   #3A5F2A;
-    --forest-lt:#5A8A45;
-    --honey:    #C9943A;
-    --honey-lt: #E8B85A;
-    --kraft:    #8B6940;
-    --cream:    #F7EDD6;
-    --paper:    #EDE0C0;
-    --dark:     #2D2D2D;
-    --white:    #FFFEF9;
-    --kraft-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    --terra:#C1593C; --terra-lt:#E07A58; --forest:#3A5F2A; --forest-lt:#5A8A45;
+    --honey:#C9943A; --kraft:#8B6940; --cream:#F7EDD6; --paper:#EDE0C0;
+    --dark:#2D2D2D; --white:#FFFEF9;
+    --kraft-texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--dark);overflow-x:hidden}
 
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { background:var(--cream); font-family:'Lato',sans-serif; color:var(--dark); overflow-x:hidden; }
+  /* COVER */
+  #cover{position:fixed;inset:0;background-color:var(--cream);background-image:var(--kraft-texture);background-size:200px 200px;z-index:1000;display:flex;align-items:center;justify-content:center;transition:opacity 0.9s ease,transform 0.9s ease;overflow:hidden}
+  .cover-corner{position:absolute;width:160px;height:160px}
+  .cover-corner-tl{top:0;left:0}.cover-corner-tr{top:0;right:0;transform:scaleX(-1)}
+  .cover-corner-bl{bottom:0;left:0;transform:scaleY(-1)}.cover-corner-br{bottom:0;right:0;transform:scale(-1,-1)}
+  .cover-content{text-align:center;z-index:2;padding:20px 40px;width:100%;max-width:420px}
+  .cover-pre{font-family:'Lato',sans-serif;font-weight:300;letter-spacing:0.3em;font-size:0.62rem;color:var(--kraft);text-transform:uppercase;margin-bottom:16px}
+  .cover-names{font-family:'Dancing Script',cursive;font-size:clamp(2.2rem,8vw,3.8rem);font-weight:700;color:var(--forest);line-height:1.1}
+  .cover-names .amp{color:var(--terra);font-size:0.55em;display:block;margin:2px 0}
+  .cover-arc{margin:18px auto;display:flex;align-items:center;justify-content:center}
+  .cover-date-txt{font-family:'Caveat',cursive;font-size:1.3rem;font-weight:600;color:var(--forest);margin-bottom:24px}
+  .cover-kepada{font-family:'Lato',sans-serif;font-size:0.6rem;color:var(--kraft);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:4px}
+  .cover-tamu{font-family:'Caveat',cursive;font-size:1.5rem;font-weight:600;color:var(--forest);margin-bottom:28px}
+  .btn-open{background:var(--terra);border:none;color:#fff;font-family:'Lato',sans-serif;font-size:0.88rem;padding:14px 40px;cursor:pointer;border-radius:50px;box-shadow:0 4px 16px rgba(193,89,60,0.3);transition:all 0.3s}
+  .btn-open:hover{background:var(--terra-lt);transform:translateY(-2px)}
+  #cover.hidden{opacity:0;transform:scale(1.03);pointer-events:none}
 
-  /* ══════════════════════════
-     COVER
-  ══════════════════════════ */
-  #cover {
-    position:fixed; inset:0;
-    background-color:var(--cream);
-    background-image:var(--kraft-texture);
-    background-size:200px 200px;
-    z-index:1000;
-    display:flex; align-items:center; justify-content:center;
-    transition:opacity 0.9s ease, transform 0.9s ease;
-    overflow:hidden;
-  }
-  .cover-corner { position:absolute; width:160px; height:160px; }
-  .cover-corner-tl { top:0; left:0; }
-  .cover-corner-tr { top:0; right:0; transform:scaleX(-1); }
-  .cover-corner-bl { bottom:0; left:0; transform:scaleY(-1); }
-  .cover-corner-br { bottom:0; right:0; transform:scale(-1,-1); }
+  /* MAIN */
+  #main{opacity:0;transition:opacity 0.8s ease 0.2s;width:100%;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+  #main.visible{opacity:1}
+  @media(min-width:520px){#main{box-shadow:0 0 60px rgba(0,0,0,0.08)}}
 
-  .cover-content {
-    text-align:center; z-index:2;
-    padding:20px 40px; width:100%; max-width:420px;
-  }
-  .cover-pre {
-    font-family:'Lato',sans-serif; font-weight:300;
-    letter-spacing:0.3em; font-size:0.62rem;
-    color:var(--kraft); text-transform:uppercase; margin-bottom:16px;
-  }
-  .cover-names {
-    font-family:'Dancing Script',cursive;
-    font-size:clamp(2.2rem,8vw,3.8rem); font-weight:700;
-    color:var(--forest); line-height:1.1;
-  }
-  .cover-names .amp {
-    color:var(--terra); font-size:0.55em; display:block; margin:2px 0;
-  }
-  .cover-arc { margin:18px auto; display:flex; align-items:center; justify-content:center; }
-  .cover-tagline {
-    font-family:'Lato',sans-serif; font-weight:300;
-    font-size:0.68rem; color:var(--kraft); letter-spacing:0.2em; margin-bottom:4px;
-  }
-  .cover-date-txt {
-    font-family:'Caveat',cursive; font-size:1.3rem;
-    font-weight:600; color:var(--forest); margin-bottom:24px;
-  }
-  .cover-kepada {
-    font-family:'Lato',sans-serif; font-size:0.6rem;
-    color:var(--kraft); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:4px;
-  }
-  .cover-tamu {
-    font-family:'Caveat',cursive; font-size:1.5rem;
-    font-weight:600; color:var(--forest); margin-bottom:28px;
-  }
-  .btn-open {
-    background:var(--terra); border:none; color:#fff;
-    font-family:'Lato',sans-serif; font-size:0.88rem;
-    padding:14px 40px; cursor:pointer;
-    border-radius:50px; box-shadow:0 4px 16px rgba(193,89,60,0.3);
-    transition:all 0.3s;
-  }
-  .btn-open:hover { background:var(--terra-lt); transform:translateY(-2px); }
-  #cover.hidden { opacity:0; transform:scale(1.03); pointer-events:none; }
+  .arc-div{display:flex;align-items:center;justify-content:center;margin:14px auto 0}
+  .arc-div svg{width:110px;height:18px;overflow:visible}
+  .sec-pre{font-family:'Lato',sans-serif;font-weight:300;letter-spacing:0.38em;font-size:0.58rem;color:var(--kraft);text-transform:uppercase;text-align:center;margin-bottom:6px}
+  .sec-title{font-family:'Dancing Script',cursive;font-size:2.4rem;font-weight:700;color:var(--forest);text-align:center}
+  .sec-sub{font-family:'Lato',sans-serif;font-weight:300;font-size:0.7rem;color:var(--kraft);text-align:center;margin-top:5px}
 
-  /* ══════════════════════════
-     MAIN
-  ══════════════════════════ */
-  #main {
-    opacity:0; transition:opacity 0.8s ease 0.2s;
-    width:100%; max-width:480px; margin:0 auto;
-    position:relative; overflow:hidden;
-  }
-  #main.visible { opacity:1; }
+  /* 1. AYAT */
+  .ayat-section{background:#FDF8F5;padding:58px 32px 52px;text-align:center}
+  .ayat-basmalah{font-family:'Lora',serif;font-size:1.2rem;color:var(--forest);direction:rtl;margin-bottom:22px;line-height:1.9}
+  .ayat-quote{color:var(--terra-lt);font-size:2.8rem;line-height:0.4;display:block;margin-bottom:18px;font-family:Georgia,serif}
+  .ayat-text{font-family:'Lora',serif;font-size:1rem;font-style:italic;color:var(--dark);line-height:1.9;margin-bottom:4px}
+  .ayat-ref{font-family:'Lato',sans-serif;font-size:0.6rem;letter-spacing:0.3em;color:var(--kraft);text-transform:uppercase;margin-top:18px}
 
-  /* Responsive breakpoint */
-  @media (min-width:520px) {
-    #main { box-shadow: 0 0 60px rgba(0,0,0,0.08); }
-  }
+  /* 2. MEMPELAI */
+  .couple-section{background:#fff;padding:44px 12px 32px}
+  .couple-row{display:flex;align-items:flex-start;gap:0;margin-top:22px;position:relative}
+  .couple-col{flex:1;text-align:center;padding:0 8px}
+  .couple-photo-wrap{position:relative;width:120px;height:120px;margin:0 auto 12px}
+  .couple-photo-wrap svg{position:absolute;left:-10px;top:-10px;width:140px;height:140px;overflow:visible}
+  .couple-photo-wrap img{width:120px;height:120px;border-radius:50%;object-fit:cover;object-position:top;display:block}
+  .couple-role{font-family:'Lato',sans-serif;font-size:0.52rem;letter-spacing:0.2em;color:var(--terra);text-transform:uppercase;margin-bottom:4px}
+  .couple-name{font-family:'Dancing Script',cursive;font-size:1.6rem;font-weight:700;color:var(--forest);line-height:1.1;margin-bottom:2px}
+  .couple-fullname{font-family:'Lora',serif;font-size:0.72rem;color:var(--dark);margin-bottom:8px}
+  .couple-parents{font-family:'Lato',sans-serif;font-weight:300;font-size:0.66rem;color:#999;line-height:1.7}
+  .couple-parents strong{color:var(--kraft);font-weight:400}
+  .couple-center{width:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+  .couple-center-line{width:1px;flex:1;min-height:80px;background:linear-gradient(to bottom,transparent,#e8dcc8 20%,#e8dcc8 80%,transparent)}
+  .couple-amp-badge{width:36px;height:36px;background:var(--terra);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Dancing Script',cursive;font-size:1.2rem;color:#fff;font-weight:700;flex-shrink:0;box-shadow:0 2px 10px rgba(193,89,60,0.35);z-index:1}
+  .couple-botanical{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0}
 
-  /* Arc divider */
-  .arc-div { display:flex; align-items:center; justify-content:center; margin:14px auto 0; }
-  .arc-div svg { width:110px; height:18px; overflow:visible; }
+  /* 3. LOVE STORY */
+  .story-section{background-color:var(--paper);background-image:var(--kraft-texture);background-size:200px 200px;padding:52px 24px}
+  .story-section .sec-pre,.story-section .sec-title,.story-section .sec-sub{text-align:center}
+  .story-list{margin-top:32px;display:flex;flex-direction:column;gap:0;position:relative}
+  .story-list::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,transparent,#c8b090 10%,#c8b090 90%,transparent)}
+  .story-item{display:flex;align-items:flex-start;gap:16px;padding:0 0 28px 0;position:relative}
+  .story-item:last-child{padding-bottom:0}
+  .story-dot{width:16px;height:16px;border-radius:50%;background:var(--terra);flex-shrink:0;margin-top:3px;position:relative;z-index:1;box-shadow:0 0 0 4px var(--paper),0 2px 8px rgba(193,89,60,0.3)}
+  .story-item:nth-child(even) .story-dot{background:var(--forest);box-shadow:0 0 0 4px var(--paper),0 2px 8px rgba(58,95,42,0.25)}
+  .story-body{flex:1}
+  .story-year{font-family:'Dancing Script',cursive;font-size:1.15rem;font-weight:700;color:var(--forest);line-height:1.2;display:block}
+  .story-label{font-family:'Caveat',cursive;font-size:0.72rem;letter-spacing:0.14em;color:var(--terra);text-transform:uppercase;display:block;margin-bottom:4px}
+  .story-desc{font-family:'Lora',serif;font-size:0.82rem;font-style:italic;color:var(--kraft);line-height:1.65}
 
-  /* Section header */
-  .sec-pre {
-    font-family:'Lato',sans-serif; font-weight:300;
-    letter-spacing:0.38em; font-size:0.58rem;
-    color:var(--kraft); text-transform:uppercase; text-align:center; margin-bottom:6px;
-  }
-  .sec-title {
-    font-family:'Dancing Script',cursive; font-size:2.4rem;
-    font-weight:700; color:var(--forest); text-align:center;
-  }
-  .sec-sub {
-    font-family:'Lato',sans-serif; font-weight:300; font-size:0.7rem;
-    color:var(--kraft); text-align:center; margin-top:5px;
-  }
+  /* 4. SAVE THE DATE */
+  .date-section{background:#EBF0E8;padding:56px 24px;text-align:center}
+  .date-card{background:#fff;border-radius:14px;padding:34px 20px 28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(58,95,42,0.12);position:relative;overflow:hidden}
+  .date-stripe{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--terra),var(--forest))}
+  .date-day{font-family:'Lato',sans-serif;font-size:0.62rem;letter-spacing:0.4em;color:var(--honey);text-transform:uppercase;margin-bottom:8px}
+  .date-day::before,.date-day::after{content:' ✦ ';opacity:0.7}
+  .date-num{font-family:'Lora',serif;font-size:5.5rem;font-weight:400;color:var(--forest);line-height:1;margin-bottom:4px}
+  .date-monthyr{font-family:'Lora',serif;font-size:1.2rem;color:var(--dark);margin-bottom:14px}
+  .date-couple{font-family:'Dancing Script',cursive;font-size:1.4rem;font-weight:700;color:var(--terra);margin-top:12px}
+  .countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+  .countdown-item{background:#fff;border-radius:10px;padding:14px 6px;box-shadow:0 2px 8px rgba(58,95,42,0.1)}
+  .countdown-num{font-family:'Dancing Script',cursive;font-size:2.2rem;font-weight:700;color:var(--forest);display:block;line-height:1}
+  .countdown-lbl{font-family:'Lato',sans-serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--kraft);text-transform:uppercase;margin-top:4px;display:block}
+  .btn-calendar{background:var(--terra);border:none;color:#fff;font-family:'Lato',sans-serif;font-size:0.82rem;padding:13px 32px;cursor:pointer;border-radius:50px;box-shadow:0 4px 14px rgba(193,89,60,0.25);transition:all 0.3s}
+  .btn-calendar:hover{background:var(--terra-lt);transform:translateY(-1px)}
 
-  /* ══════════════════════════
-     1. AYAT
-  ══════════════════════════ */
-  .ayat-section {
-    background:#FDF8F5; padding:58px 32px 52px; text-align:center;
-  }
-  .ayat-basmalah {
-    font-family:'Lora',serif; font-size:1.2rem;
-    color:var(--forest); direction:rtl; margin-bottom:22px; line-height:1.9;
-  }
-  .ayat-quote {
-    color:var(--terra-lt); font-size:2.8rem; line-height:0.4;
-    display:block; margin-bottom:18px; font-family:Georgia,serif;
-  }
-  .ayat-text {
-    font-family:'Lora',serif; font-size:1rem; font-style:italic;
-    color:var(--dark); line-height:1.9; margin-bottom:4px;
-  }
-  .ayat-ref {
-    font-family:'Lato',sans-serif; font-size:0.6rem;
-    letter-spacing:0.3em; color:var(--kraft); text-transform:uppercase; margin-top:18px;
-  }
-  .ayat-salam {
-    font-family:'Lato',sans-serif; font-weight:300; font-size:0.7rem;
-    color:var(--kraft); letter-spacing:0.05em; margin-bottom:6px;
-  }
-  .ayat-kepada {
-    font-family:'Dancing Script',cursive; font-size:1.4rem;
-    font-weight:700; color:var(--forest); margin-bottom:24px;
-  }
-  .ayat-kepada strong { color:var(--terra); font-weight:700; }
+  /* 5. EVENTS */
+  .events-section{background:#FDF4EF;padding:56px 20px}
+  .events-grid{display:flex;flex-direction:column;gap:18px;margin-top:28px}
+  .event-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 3px 16px rgba(61,36,16,0.09)}
+  .event-stripe{height:5px;background:linear-gradient(90deg,var(--forest-lt),var(--terra-lt))}
+  .event-body{padding:24px 20px;text-align:center}
+  .event-icon{font-size:2rem;margin-bottom:8px;display:block}
+  .event-name{font-family:'Dancing Script',cursive;font-size:1.9rem;font-weight:700;color:var(--forest);margin-bottom:4px}
+  .event-info{text-align:left;margin-top:14px;border-top:1px solid #f5ede4;padding-top:14px}
+  .event-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-family:'Lato',sans-serif;font-size:0.77rem;color:var(--dark);line-height:1.55}
+  .event-ico{color:var(--terra);font-size:0.9rem;flex-shrink:0;margin-top:1px}
+  .event-row strong{display:block;font-weight:600;color:var(--dark)}
+  .event-row span{color:#999;font-size:0.7rem}
+  .event-btns{display:flex;gap:10px;margin-top:16px}
+  .btn-peta{flex:1;background:var(--forest);color:#fff;border:none;border-radius:8px;padding:11px 0;font-family:'Lato',sans-serif;font-size:0.72rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px}
+  .btn-peta:hover{background:var(--forest-lt)}
+  .btn-simpan{flex:1;background:transparent;color:var(--forest);border:1.5px solid var(--forest);border-radius:8px;padding:11px 0;font-family:'Lato',sans-serif;font-size:0.72rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:5px}
+  .btn-simpan:hover{background:var(--forest);color:#fff}
 
-  /* ══════════════════════════
-     2. MEMPELAI
-  ══════════════════════════ */
-  .couple-section { background:#fff; padding:44px 12px 32px; }
-  .couple-row {
-    display:flex; align-items:flex-start; gap:0; margin-top:22px; position:relative;
-  }
-  .couple-col { flex:1; text-align:center; padding:0 8px; }
-  .couple-photo-wrap {
-    position:relative; width:120px; height:120px; margin:0 auto 12px;
-  }
-  .couple-photo-wrap svg {
-    position:absolute; left:-10px; top:-10px;
-    width:140px; height:140px; overflow:visible;
-  }
-  .couple-photo-wrap img {
-    width:120px; height:120px; border-radius:50%;
-    object-fit:cover; object-position:top; display:block;
-  }
-  .couple-role {
-    font-family:'Lato',sans-serif; font-size:0.52rem;
-    letter-spacing:0.2em; color:var(--terra); text-transform:uppercase; margin-bottom:4px;
-  }
-  .couple-name {
-    font-family:'Dancing Script',cursive; font-size:1.6rem;
-    font-weight:700; color:var(--forest); line-height:1.1; margin-bottom:2px;
-  }
-  .couple-fullname {
-    font-family:'Lora',serif; font-size:0.72rem;
-    color:var(--dark); margin-bottom:8px;
-  }
-  .couple-parents {
-    font-family:'Lato',sans-serif; font-weight:300;
-    font-size:0.66rem; color:#999; line-height:1.7;
-  }
-  .couple-parents strong { color:var(--kraft); font-weight:400; }
-  .couple-center {
-    width:2px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; flex-shrink:0;
-  }
-  .couple-center-line {
-    width:1px; flex:1; min-height:80px;
-    background:linear-gradient(to bottom, transparent, #e8dcc8 20%, #e8dcc8 80%, transparent);
-  }
-  .couple-amp-badge {
-    width:36px; height:36px; background:var(--terra); border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Dancing Script',cursive; font-size:1.2rem;
-    color:#fff; font-weight:700; flex-shrink:0;
-    box-shadow:0 2px 10px rgba(193,89,60,0.35); z-index:1;
-  }
-  /* Botanical illustration between couple */
-  .couple-botanical {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:8px 0;
-  }
+  /* 6. GALLERY */
+  .gallery-section{background-color:var(--cream);background-image:var(--kraft-texture);background-size:200px 200px;padding:52px 20px 56px}
+  .gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .gallery-item{background:#fff;padding:7px 7px 28px;box-shadow:2px 4px 14px rgba(61,36,16,0.13);position:relative}
+  .gallery-item:nth-child(odd){transform:rotate(-1.5deg)}
+  .gallery-item:nth-child(even){transform:rotate(1.5deg);margin-top:14px}
+  .gallery-item::before{content:'';position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:42px;height:16px;background:rgba(201,148,58,0.38);border-radius:2px}
+  .gallery-item img{width:100%;aspect-ratio:1;object-fit:cover;object-position:top;display:block}
 
-  /* ══════════════════════════
-     3. LOVE STORY (text list)
-  ══════════════════════════ */
-  .story-section {
-    background-color:var(--paper);
-    background-image:var(--kraft-texture);
-    background-size:200px 200px;
-    padding:52px 24px;
-  }
-  .story-section .sec-pre,
-  .story-section .sec-title,
-  .story-section .sec-sub { text-align:center; }
-  .story-list {
-    margin-top:32px;
-    display:flex; flex-direction:column; gap:0;
-    position:relative;
-  }
-  /* Garis timeline vertikal */
-  .story-list::before {
-    content:''; position:absolute;
-    left:22px; top:8px; bottom:8px; width:1px;
-    background:linear-gradient(to bottom, transparent, #c8b090 10%, #c8b090 90%, transparent);
-  }
-  .story-item {
-    display:flex; align-items:flex-start; gap:16px;
-    padding:0 0 28px 0; position:relative;
-  }
-  .story-item:last-child { padding-bottom:0; }
-  .story-dot {
-    width:16px; height:16px; border-radius:50%;
-    background:var(--terra); flex-shrink:0;
-    margin-top:3px; position:relative; z-index:1;
-    box-shadow:0 0 0 4px var(--paper), 0 2px 8px rgba(193,89,60,0.3);
-  }
-  .story-item:nth-child(even) .story-dot { background:var(--forest); box-shadow:0 0 0 4px var(--paper), 0 2px 8px rgba(58,95,42,0.25); }
-  .story-body { flex:1; padding-top:0; }
-  .story-year {
-    font-family:'Dancing Script',cursive; font-size:1.15rem;
-    font-weight:700; color:var(--forest); line-height:1.2; display:block;
-  }
-  .story-label {
-    font-family:'Caveat',cursive; font-size:0.72rem; letter-spacing:0.14em;
-    color:var(--terra); text-transform:uppercase; display:block; margin-bottom:4px;
-  }
-  .story-desc {
-    font-family:'Lora',serif; font-size:0.82rem; font-style:italic;
-    color:var(--kraft); line-height:1.65;
-  }
+  /* 7. WISHES */
+  .wishes-section{background-color:#C8B090;background-image:radial-gradient(circle,rgba(255,255,255,0.14) 1px,transparent 1px);background-size:20px 20px;padding:52px 20px 60px}
+  .wishes-header{background:#fff;padding:22px 24px 18px;text-align:center;position:relative;margin-bottom:20px;box-shadow:2px 4px 14px rgba(61,36,16,0.12)}
+  .wishes-pin{width:18px;height:18px;background:var(--terra);border-radius:50%;position:absolute;top:-9px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(193,89,60,0.4)}
+  .wishes-title{font-family:'Dancing Script',cursive;font-size:2rem;font-weight:700;color:var(--forest)}
+  .wishes-sub{font-family:'Lato',sans-serif;font-size:0.7rem;color:var(--kraft);margin-top:4px}
+  .wishes-form{background:#FEFBE8;border-radius:10px;padding:20px 18px;margin-bottom:20px;box-shadow:2px 3px 10px rgba(61,36,16,0.1)}
+  .wishes-form-lbl{font-family:'Dancing Script',cursive;font-size:1.1rem;font-weight:700;color:var(--forest);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .form-input{width:100%;background:#fff;border:1.5px solid #e0d8c8;border-radius:50px;color:var(--dark);font-family:'Lato',sans-serif;font-size:0.85rem;padding:11px 18px;outline:none;transition:border-color 0.3s;margin-bottom:12px;-webkit-appearance:none}
+  .form-input:focus{border-color:var(--forest)}
+  .form-textarea{width:100%;background:#fff;border:1.5px solid #e0d8c8;border-radius:16px;color:var(--dark);font-family:'Lato',sans-serif;font-size:0.85rem;padding:12px 18px;outline:none;transition:border-color 0.3s;margin-bottom:12px;resize:none;height:90px;-webkit-appearance:none}
+  .form-textarea:focus{border-color:var(--forest)}
+  .form-select{width:100%;background:#fff;border:1.5px solid #e0d8c8;border-radius:50px;color:var(--dark);font-family:'Lato',sans-serif;font-size:0.85rem;padding:11px 18px;outline:none;transition:border-color 0.3s;margin-bottom:12px;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0,0 L5,6 L10,0Z' fill='%238B6940'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:36px}
+  .form-select option{background:#fff}
+  .btn-kirim{width:100%;background:var(--terra);border:none;color:#fff;font-family:'Lato',sans-serif;font-size:0.85rem;padding:14px;cursor:pointer;border-radius:50px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn-kirim:hover{background:var(--terra-lt);transform:translateY(-1px)}
+  .ucapan-list{display:flex;flex-direction:column;gap:14px;max-height:340px;overflow-y:auto}
+  .ucapan-item{padding:14px 14px 12px;position:relative;box-shadow:2px 3px 10px rgba(61,36,16,0.12);border-radius:4px}
+  .ucapan-item:nth-child(4n+1){background:#FFF9C4;transform:rotate(-0.8deg)}
+  .ucapan-item:nth-child(4n+2){background:#C8E6C9;transform:rotate(0.6deg)}
+  .ucapan-item:nth-child(4n+3){background:#FFE0CC;transform:rotate(-0.5deg)}
+  .ucapan-item:nth-child(4n+4){background:#E1D5F0;transform:rotate(0.8deg)}
+  .ucapan-item::after{content:'';position:absolute;top:0;right:0;border-style:solid;border-width:0 14px 14px 0;border-color:transparent rgba(0,0,0,0.08) transparent transparent}
+  .ucapan-name{font-family:'Caveat',cursive;font-size:1.05rem;font-weight:600;color:var(--dark);margin-bottom:4px}
+  .ucapan-msg{font-family:'Caveat',cursive;font-size:0.92rem;color:rgba(45,45,45,0.75);line-height:1.5}
+  .ucapan-status{font-family:'Lato',sans-serif;font-size:0.56rem;color:var(--kraft);letter-spacing:0.1em;margin-top:6px;text-transform:uppercase}
+  .scrollbar-hide::-webkit-scrollbar{display:none}
 
-  /* ══════════════════════════
-     4. SAVE THE DATE + COUNTDOWN
-  ══════════════════════════ */
-  .date-section {
-    background:#EBF0E8; padding:56px 24px; text-align:center;
-  }
-  .date-card {
-    background:#fff; border-radius:14px;
-    padding:34px 20px 28px; margin-bottom:24px;
-    box-shadow:0 4px 20px rgba(58,95,42,0.12); position:relative; overflow:hidden;
-  }
-  .date-stripe {
-    position:absolute; top:0; left:0; right:0; height:5px;
-    background:linear-gradient(90deg, var(--terra), var(--forest));
-  }
-  .date-day {
-    font-family:'Lato',sans-serif; font-size:0.62rem;
-    letter-spacing:0.4em; color:var(--honey); text-transform:uppercase; margin-bottom:8px;
-  }
-  .date-day::before, .date-day::after { content:' ✦ '; opacity:0.7; }
-  .date-num {
-    font-family:'Lora',serif; font-size:5.5rem;
-    font-weight:400; color:var(--forest); line-height:1; margin-bottom:4px;
-  }
-  .date-monthyr {
-    font-family:'Lora',serif; font-size:1.2rem;
-    color:var(--dark); margin-bottom:14px;
-  }
-  .date-couple {
-    font-family:'Dancing Script',cursive; font-size:1.4rem;
-    font-weight:700; color:var(--terra); margin-top:12px;
-  }
-  .countdown-grid {
-    display:grid; grid-template-columns:repeat(4,1fr);
-    gap:10px; margin-bottom:24px;
-  }
-  .countdown-item {
-    background:#fff; border-radius:10px; padding:14px 6px;
-    box-shadow:0 2px 8px rgba(58,95,42,0.1);
-  }
-  .countdown-num {
-    font-family:'Dancing Script',cursive; font-size:2.2rem;
-    font-weight:700; color:var(--forest); display:block; line-height:1;
-  }
-  .countdown-lbl {
-    font-family:'Lato',sans-serif; font-size:0.52rem;
-    letter-spacing:0.1em; color:var(--kraft); text-transform:uppercase;
-    margin-top:4px; display:block;
-  }
-  .btn-calendar {
-    background:var(--terra); border:none; color:#fff;
-    font-family:'Lato',sans-serif; font-size:0.82rem;
-    padding:13px 32px; cursor:pointer; border-radius:50px;
-    box-shadow:0 4px 14px rgba(193,89,60,0.25); transition:all 0.3s;
-  }
-  .btn-calendar:hover { background:var(--terra-lt); transform:translateY(-1px); }
+  /* 8. FOOTER */
+  .footer-section{background:#FDF4EF;padding:60px 24px 50px;text-align:center}
+  .footer-photo{width:100px;height:100px;margin:0 auto 22px;border-radius:50%;overflow:hidden;box-shadow:0 4px 16px rgba(61,36,16,0.15);border:3px solid #fff}
+  .footer-photo img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .footer-title{font-family:'Dancing Script',cursive;font-size:2.8rem;font-weight:700;color:var(--forest);margin-bottom:14px}
+  .footer-text{font-family:'Lato',sans-serif;font-weight:300;font-size:0.8rem;color:#999;line-height:1.9;margin-bottom:6px}
+  .footer-with-love{font-family:'Lato',sans-serif;font-size:0.65rem;color:var(--kraft);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:6px;margin-top:10px}
+  .footer-names{font-family:'Dancing Script',cursive;font-size:2.1rem;font-weight:700;color:var(--terra);margin-bottom:8px}
+  .footer-date{font-family:'Caveat',cursive;font-size:1.1rem;color:var(--honey);letter-spacing:0.1em}
+  .footer-salam{font-family:'Dancing Script',cursive;font-size:1rem;color:var(--terra);margin-top:12px;display:block}
+  .footer-vine{margin:24px auto 0;display:flex;justify-content:center}
+  .footer-copy{font-family:'Lato',sans-serif;font-size:0.52rem;color:#ccc;letter-spacing:0.2em;margin-top:14px}
 
-  /* ══════════════════════════
-     5. WEDDING EVENTS
-  ══════════════════════════ */
-  .events-section { background:#FDF4EF; padding:56px 20px; }
-  .events-grid { display:flex; flex-direction:column; gap:18px; margin-top:28px; }
-  .event-card {
-    background:#fff; border-radius:14px; overflow:hidden;
-    box-shadow:0 3px 16px rgba(61,36,16,0.09);
-  }
-  .event-stripe { height:5px; background:linear-gradient(90deg, var(--forest-lt), var(--terra-lt)); }
-  .event-body { padding:24px 20px; text-align:center; }
-  .event-icon { font-size:2rem; margin-bottom:8px; display:block; }
-  .event-name {
-    font-family:'Dancing Script',cursive; font-size:1.9rem;
-    font-weight:700; color:var(--forest); margin-bottom:4px;
-  }
-  .event-info { text-align:left; margin-top:14px; border-top:1px solid #f5ede4; padding-top:14px; }
-  .event-row {
-    display:flex; align-items:flex-start; gap:10px;
-    margin-bottom:10px; font-family:'Lato',sans-serif;
-    font-size:0.77rem; color:var(--dark); line-height:1.55;
-  }
-  .event-ico { color:var(--terra); font-size:0.9rem; flex-shrink:0; margin-top:1px; }
-  .event-row strong { display:block; font-weight:600; color:var(--dark); }
-  .event-row span { color:#999; font-size:0.7rem; }
-  .event-btns { display:flex; gap:10px; margin-top:16px; }
-  .btn-peta {
-    flex:1; background:var(--forest); color:#fff; border:none;
-    border-radius:8px; padding:11px 0; font-family:'Lato',sans-serif;
-    font-size:0.72rem; cursor:pointer; transition:all 0.3s;
-    text-decoration:none; display:flex; align-items:center;
-    justify-content:center; gap:5px;
-  }
-  .btn-peta:hover { background:var(--forest-lt); }
-  .btn-simpan {
-    flex:1; background:transparent; color:var(--forest);
-    border:1.5px solid var(--forest); border-radius:8px; padding:11px 0;
-    font-family:'Lato',sans-serif; font-size:0.72rem;
-    cursor:pointer; transition:all 0.3s;
-    display:flex; align-items:center; justify-content:center; gap:5px;
-  }
-  .btn-simpan:hover { background:var(--forest); color:#fff; }
-
-  /* ══════════════════════════
-     6. GALLERY
-  ══════════════════════════ */
-  .gallery-section {
-    background-color:var(--cream);
-    background-image:var(--kraft-texture);
-    background-size:200px 200px;
-    padding:52px 20px 56px;
-  }
-  .gallery-grid {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:14px; margin-top:24px;
-  }
-  .gallery-item {
-    background:#fff; padding:7px 7px 28px;
-    box-shadow:2px 4px 14px rgba(61,36,16,0.13); position:relative;
-  }
-  .gallery-item:nth-child(odd)  { transform:rotate(-1.5deg); }
-  .gallery-item:nth-child(even) { transform:rotate(1.5deg); margin-top:14px; }
-  .gallery-item::before {
-    content:''; position:absolute;
-    top:-9px; left:50%; transform:translateX(-50%);
-    width:42px; height:16px;
-    background:rgba(201,148,58,0.38); border-radius:2px;
-  }
-  .gallery-item img {
-    width:100%; aspect-ratio:1;
-    object-fit:cover; object-position:top; display:block;
-  }
-
-  /* ══════════════════════════
-     7. WISHES / RSVP
-  ══════════════════════════ */
-  .wishes-section {
-    background-color:#C8B090;
-    background-image:radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px);
-    background-size:20px 20px;
-    padding:52px 20px 60px;
-  }
-  .wishes-header {
-    background:#fff; padding:22px 24px 18px; text-align:center;
-    position:relative; margin-bottom:20px;
-    box-shadow:2px 4px 14px rgba(61,36,16,0.12);
-  }
-  .wishes-pin {
-    width:18px; height:18px; background:var(--terra); border-radius:50%;
-    position:absolute; top:-9px; left:50%; transform:translateX(-50%);
-    box-shadow:0 2px 8px rgba(193,89,60,0.4);
-  }
-  .wishes-title {
-    font-family:'Dancing Script',cursive; font-size:2rem;
-    font-weight:700; color:var(--forest);
-  }
-  .wishes-sub {
-    font-family:'Lato',sans-serif; font-size:0.7rem; color:var(--kraft); margin-top:4px;
-  }
-  .wishes-form {
-    background:#FEFBE8; border-radius:10px;
-    padding:20px 18px; margin-bottom:20px;
-    box-shadow:2px 3px 10px rgba(61,36,16,0.1);
-  }
-  .wishes-form-lbl {
-    font-family:'Dancing Script',cursive; font-size:1.1rem;
-    font-weight:700; color:var(--forest); margin-bottom:12px;
-    display:flex; align-items:center; gap:6px;
-  }
-  .form-input {
-    width:100%; background:#fff;
-    border:1.5px solid #e0d8c8; border-radius:50px;
-    color:var(--dark); font-family:'Lato',sans-serif; font-size:0.85rem;
-    padding:11px 18px; outline:none; transition:border-color 0.3s;
-    margin-bottom:12px; -webkit-appearance:none;
-  }
-  .form-input:focus { border-color:var(--forest); }
-  .form-textarea {
-    width:100%; background:#fff;
-    border:1.5px solid #e0d8c8; border-radius:16px;
-    color:var(--dark); font-family:'Lato',sans-serif; font-size:0.85rem;
-    padding:12px 18px; outline:none; transition:border-color 0.3s;
-    margin-bottom:12px; resize:none; height:90px; -webkit-appearance:none;
-  }
-  .form-textarea:focus { border-color:var(--forest); }
-  .form-select {
-    width:100%; background:#fff;
-    border:1.5px solid #e0d8c8; border-radius:50px;
-    color:var(--dark); font-family:'Lato',sans-serif; font-size:0.85rem;
-    padding:11px 18px 11px 18px; outline:none; transition:border-color 0.3s;
-    margin-bottom:12px; -webkit-appearance:none; appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0,0 L5,6 L10,0Z' fill='%238B6940'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 16px center; padding-right:36px;
-  }
-  .form-select option { background:#fff; }
-  .btn-kirim {
-    width:100%; background:var(--terra); border:none; color:#fff;
-    font-family:'Lato',sans-serif; font-size:0.85rem; padding:14px;
-    cursor:pointer; border-radius:50px; transition:all 0.3s;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
-  .btn-kirim:hover { background:var(--terra-lt); transform:translateY(-1px); }
-  .ucapan-list {
-    display:flex; flex-direction:column; gap:14px;
-    max-height:340px; overflow-y:auto;
-  }
-  .ucapan-item {
-    padding:14px 14px 12px; position:relative;
-    box-shadow:2px 3px 10px rgba(61,36,16,0.12); border-radius:4px;
-  }
-  .ucapan-item:nth-child(4n+1) { background:#FFF9C4; transform:rotate(-0.8deg); }
-  .ucapan-item:nth-child(4n+2) { background:#C8E6C9; transform:rotate(0.6deg); }
-  .ucapan-item:nth-child(4n+3) { background:#FFE0CC; transform:rotate(-0.5deg); }
-  .ucapan-item:nth-child(4n+4) { background:#E1D5F0; transform:rotate(0.8deg); }
-  .ucapan-item::after {
-    content:''; position:absolute; top:0; right:0;
-    border-style:solid; border-width:0 14px 14px 0;
-    border-color:transparent rgba(0,0,0,0.08) transparent transparent;
-  }
-  .ucapan-name {
-    font-family:'Caveat',cursive; font-size:1.05rem;
-    font-weight:600; color:var(--dark); margin-bottom:4px;
-  }
-  .ucapan-msg {
-    font-family:'Caveat',cursive; font-size:0.92rem;
-    color:rgba(45,45,45,0.75); line-height:1.5;
-  }
-  .ucapan-status {
-    font-family:'Lato',sans-serif; font-size:0.56rem;
-    color:var(--kraft); letter-spacing:0.1em;
-    margin-top:6px; text-transform:uppercase;
-  }
-  .scrollbar-hide::-webkit-scrollbar { display:none; }
-
-  /* ══════════════════════════
-     8. FOOTER
-  ══════════════════════════ */
-  .footer-section {
-    background:#FDF4EF; padding:60px 24px 50px; text-align:center;
-  }
-  .footer-photo {
-    width:100px; height:100px; margin:0 auto 22px;
-    border-radius:50%; overflow:hidden;
-    box-shadow:0 4px 16px rgba(61,36,16,0.15);
-    border:3px solid #fff;
-  }
-  .footer-photo img {
-    width:100%; height:100%; object-fit:cover; object-position:top;
-  }
-  .footer-title {
-    font-family:'Dancing Script',cursive; font-size:2.8rem;
-    font-weight:700; color:var(--forest); margin-bottom:14px;
-  }
-  .footer-text {
-    font-family:'Lato',sans-serif; font-weight:300; font-size:0.8rem;
-    color:#999; line-height:1.9; margin-bottom:6px;
-  }
-  .footer-with-love {
-    font-family:'Lato',sans-serif; font-size:0.65rem;
-    color:var(--kraft); letter-spacing:0.2em; text-transform:uppercase;
-    margin-bottom:6px; margin-top:10px;
-  }
-  .footer-names {
-    font-family:'Dancing Script',cursive; font-size:2.1rem;
-    font-weight:700; color:var(--terra); margin-bottom:8px;
-  }
-  .footer-date {
-    font-family:'Caveat',cursive; font-size:1.1rem;
-    color:var(--honey); letter-spacing:0.1em;
-  }
-  .footer-salam {
-    font-family:'Dancing Script',cursive; font-size:1rem;
-    color:var(--terra); margin-top:12px; display:block;
-  }
-  .footer-vine { margin:24px auto 0; display:flex; justify-content:center; }
-  .footer-copy {
-    font-family:'Lato',sans-serif; font-size:0.52rem;
-    color:#ccc; letter-spacing:0.2em; margin-top:14px;
-  }
-
-  /* ══════════════════════════
-     FLOATING NAV
-  ══════════════════════════ */
-  .floating-nav {
-    position:fixed; bottom:20px; left:50%;
-    transform:translateX(-50%); z-index:500;
-    display:flex; gap:2px;
-    background:rgba(74,26,10,0.92);
-    border:1px solid rgba(201,148,58,0.35);
-    backdrop-filter:blur(10px); padding:7px 12px; border-radius:50px;
-  }
-  .nav-btn {
-    background:none; border:none; cursor:pointer;
-    padding:7px 10px; color:rgba(247,237,214,0.4);
-    transition:color 0.2s; font-size:0.9rem;
-  }
-  .nav-btn:hover, .nav-btn.active { color:var(--honey); }
+  /* FLOATING NAV */
+  .floating-nav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:500;display:flex;gap:2px;background:rgba(74,26,10,0.92);border:1px solid rgba(201,148,58,0.35);backdrop-filter:blur(10px);padding:7px 12px;border-radius:50px}
+  .nav-btn{background:none;border:none;cursor:pointer;padding:7px 10px;color:rgba(247,237,214,0.4);transition:color 0.2s;font-size:0.9rem}
+  .nav-btn:hover,.nav-btn.active{color:var(--honey)}
 
   /* TOAST */
-  .toast {
-    position:fixed; bottom:80px; left:50%;
-    transform:translateX(-50%) translateY(20px);
-    background:var(--forest); color:#fff;
-    font-family:'Lato',sans-serif; font-size:0.78rem;
-    padding:10px 22px; z-index:999; opacity:0;
-    transition:all 0.3s; white-space:nowrap;
-    border-radius:50px; box-shadow:0 4px 14px rgba(58,95,42,0.3);
+  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--forest);color:#fff;font-family:'Lato',sans-serif;font-size:0.78rem;padding:10px 22px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap;border-radius:50px;box-shadow:0 4px 14px rgba(58,95,42,0.3)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* SCROLL TRIGGER ANIMATIONS */
+  .fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow{
+    opacity:0;will-change:opacity,transform;
+    transition:opacity 0.85s cubic-bezier(0.22,1,0.36,1),transform 0.85s cubic-bezier(0.22,1,0.36,1)
   }
-  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-  /* ══════════════════════════
-     SCROLL TRIGGER ANIMATIONS
-     Background + konten bergerak bersama
-  ══════════════════════════ */
-
-  .fade-in,
-  .fade-from-left,
-  .fade-from-right,
-  .fade-scale,
-  .fade-up-slow {
-    opacity: 0;
-    will-change: opacity, transform;
-    transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1),
-                transform 0.85s cubic-bezier(0.22,1,0.36,1);
-  }
-
-  /* Tiap tipe punya translateY sehingga seluruh block (termasuk bg) naik */
-  .fade-in        { transform: translateY(40px); }
-  .fade-from-left { transform: translate(-50px, 20px); }
-  .fade-from-right{ transform: translate(50px, 20px); }
-  .fade-scale     { transform: scale(0.96) translateY(24px); transform-origin: center top; }
-  .fade-up-slow   { transform: translateY(56px); transition-duration: 1.1s; }
-
-  .fade-in.visible,
-  .fade-from-left.visible,
-  .fade-from-right.visible,
-  .fade-scale.visible,
-  .fade-up-slow.visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  .anim-delay-1 { transition-delay: 0.1s; }
-  .anim-delay-2 { transition-delay: 0.22s; }
-  .anim-delay-3 { transition-delay: 0.38s; }
-  .anim-delay-4 { transition-delay: 0.55s; }
+  .fade-in{transform:translateY(40px)}
+  .fade-from-left{transform:translate(-50px,20px)}
+  .fade-from-right{transform:translate(50px,20px)}
+  .fade-scale{transform:scale(0.96) translateY(24px);transform-origin:center top}
+  .fade-up-slow{transform:translateY(56px);transition-duration:1.1s}
+  .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,.fade-scale.visible,.fade-up-slow.visible{opacity:1;transform:none}
 </style>
 </head>
 <body>
 
-<!-- ══════ COVER ══════ -->
+<!-- COVER -->
 <div id="cover">
-  <!-- Corner botanical (reused via CSS transform) -->
   <svg class="cover-corner cover-corner-tl" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" fill="none">
     <path d="M10,150 Q20,100 50,70 Q80,40 150,10" stroke="#3A5F2A" stroke-width="1.8" opacity="0.5"/>
     <path d="M28,118 Q40,108 38,95" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M55,82 Q68,72 65,58" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M90,52 Q102,42 100,28" stroke="#3A5F2A" stroke-width="1.2" opacity="0.4"/>
-    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/>
-    <circle cx="44" cy="102" r="3.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="32" cy="105" r="3" fill="#C9943A" opacity="0.65"/>
-    <circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="71" cy="65" r="3" fill="#C1593C" opacity="0.65"/>
-    <circle cx="59" cy="63" r="3" fill="#C9943A" opacity="0.6"/>
-    <circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/>
-    <circle cx="107" cy="35" r="3" fill="#3A5F2A" opacity="0.65"/>
+    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/><circle cx="44" cy="102" r="3.5" fill="#3A5F2A" opacity="0.7"/>
+    <circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/><circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/>
     <circle cx="150" cy="10" r="6" fill="#C1593C" opacity="0.78"/>
-    <circle cx="140" cy="5" r="3" fill="#3A5F2A" opacity="0.6"/>
-    <circle cx="156" cy="20" r="3" fill="#C9943A" opacity="0.55"/>
     <ellipse cx="36" cy="112" rx="6" ry="2.5" transform="rotate(-45 36 112)" fill="#3A5F2A" opacity="0.45"/>
     <ellipse cx="70" cy="68" rx="5" ry="2.5" transform="rotate(-55 70 68)" fill="#3A5F2A" opacity="0.4"/>
     <ellipse cx="110" cy="38" rx="5" ry="2" transform="rotate(-60 110 38)" fill="#3A5F2A" opacity="0.38"/>
@@ -635,68 +210,32 @@
     <path d="M28,118 Q40,108 38,95" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M55,82 Q68,72 65,58" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M90,52 Q102,42 100,28" stroke="#3A5F2A" stroke-width="1.2" opacity="0.4"/>
-    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/>
-    <circle cx="44" cy="102" r="3.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="32" cy="105" r="3" fill="#C9943A" opacity="0.65"/>
-    <circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="71" cy="65" r="3" fill="#C1593C" opacity="0.65"/>
-    <circle cx="59" cy="63" r="3" fill="#C9943A" opacity="0.6"/>
-    <circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/>
-    <circle cx="107" cy="35" r="3" fill="#3A5F2A" opacity="0.65"/>
-    <circle cx="150" cy="10" r="6" fill="#C1593C" opacity="0.78"/>
-    <circle cx="140" cy="5" r="3" fill="#3A5F2A" opacity="0.6"/>
-    <circle cx="156" cy="20" r="3" fill="#C9943A" opacity="0.55"/>
+    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/><circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
+    <circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/><circle cx="150" cy="10" r="6" fill="#C1593C" opacity="0.78"/>
     <ellipse cx="36" cy="112" rx="6" ry="2.5" transform="rotate(-45 36 112)" fill="#3A5F2A" opacity="0.45"/>
     <ellipse cx="70" cy="68" rx="5" ry="2.5" transform="rotate(-55 70 68)" fill="#3A5F2A" opacity="0.4"/>
-    <ellipse cx="110" cy="38" rx="5" ry="2" transform="rotate(-60 110 38)" fill="#3A5F2A" opacity="0.38"/>
   </svg>
   <svg class="cover-corner cover-corner-bl" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" fill="none">
     <path d="M10,150 Q20,100 50,70 Q80,40 150,10" stroke="#3A5F2A" stroke-width="1.8" opacity="0.5"/>
     <path d="M28,118 Q40,108 38,95" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M55,82 Q68,72 65,58" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
-    <path d="M90,52 Q102,42 100,28" stroke="#3A5F2A" stroke-width="1.2" opacity="0.4"/>
-    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/>
-    <circle cx="44" cy="102" r="3.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="32" cy="105" r="3" fill="#C9943A" opacity="0.65"/>
-    <circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="71" cy="65" r="3" fill="#C1593C" opacity="0.65"/>
-    <circle cx="59" cy="63" r="3" fill="#C9943A" opacity="0.6"/>
-    <circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/>
-    <circle cx="107" cy="35" r="3" fill="#3A5F2A" opacity="0.65"/>
+    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/><circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
     <circle cx="150" cy="10" r="6" fill="#C1593C" opacity="0.78"/>
-    <circle cx="140" cy="5" r="3" fill="#3A5F2A" opacity="0.6"/>
-    <circle cx="156" cy="20" r="3" fill="#C9943A" opacity="0.55"/>
     <ellipse cx="36" cy="112" rx="6" ry="2.5" transform="rotate(-45 36 112)" fill="#3A5F2A" opacity="0.45"/>
-    <ellipse cx="70" cy="68" rx="5" ry="2.5" transform="rotate(-55 70 68)" fill="#3A5F2A" opacity="0.4"/>
-    <ellipse cx="110" cy="38" rx="5" ry="2" transform="rotate(-60 110 38)" fill="#3A5F2A" opacity="0.38"/>
   </svg>
   <svg class="cover-corner cover-corner-br" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" fill="none">
     <path d="M10,150 Q20,100 50,70 Q80,40 150,10" stroke="#3A5F2A" stroke-width="1.8" opacity="0.5"/>
     <path d="M28,118 Q40,108 38,95" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
     <path d="M55,82 Q68,72 65,58" stroke="#3A5F2A" stroke-width="1.2" opacity="0.45"/>
-    <path d="M90,52 Q102,42 100,28" stroke="#3A5F2A" stroke-width="1.2" opacity="0.4"/>
-    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/>
-    <circle cx="44" cy="102" r="3.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="32" cy="105" r="3" fill="#C9943A" opacity="0.65"/>
-    <circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
-    <circle cx="71" cy="65" r="3" fill="#C1593C" opacity="0.65"/>
-    <circle cx="59" cy="63" r="3" fill="#C9943A" opacity="0.6"/>
-    <circle cx="100" cy="28" r="4.5" fill="#C1593C" opacity="0.75"/>
-    <circle cx="107" cy="35" r="3" fill="#3A5F2A" opacity="0.65"/>
+    <circle cx="38" cy="95" r="5" fill="#C1593C" opacity="0.8"/><circle cx="65" cy="58" r="4.5" fill="#3A5F2A" opacity="0.7"/>
     <circle cx="150" cy="10" r="6" fill="#C1593C" opacity="0.78"/>
-    <circle cx="140" cy="5" r="3" fill="#3A5F2A" opacity="0.6"/>
-    <circle cx="156" cy="20" r="3" fill="#C9943A" opacity="0.55"/>
-    <ellipse cx="36" cy="112" rx="6" ry="2.5" transform="rotate(-45 36 112)" fill="#3A5F2A" opacity="0.45"/>
     <ellipse cx="70" cy="68" rx="5" ry="2.5" transform="rotate(-55 70 68)" fill="#3A5F2A" opacity="0.4"/>
-    <ellipse cx="110" cy="38" rx="5" ry="2" transform="rotate(-60 110 38)" fill="#3A5F2A" opacity="0.38"/>
   </svg>
 
   <div class="cover-content">
     <p class="cover-pre">Walimatul Ursy</p>
     <div class="cover-names">
-      Purwanto<br>
-      <span class="amp">&</span>
-      Desty Yani
+      Purwanto<br><span class="amp">&</span>Desty Yani
     </div>
     <div class="cover-arc">
       <svg viewBox="0 0 110 18" width="110" height="18" xmlns="http://www.w3.org/2000/svg">
@@ -714,7 +253,7 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- ══════ MAIN ══════ -->
+<!-- MAIN -->
 <div id="main">
 
   <!-- 1. AYAT -->
@@ -737,28 +276,22 @@
     <p class="sec-pre">Mempelai</p>
     <h2 class="sec-title">Kami yang Berbahagia</h2>
     <div class="couple-row">
-      <!-- Pengantin Wanita -->
+      <!-- Pengantin Pria -->
       <div class="couple-col">
         <div class="couple-photo-wrap">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Purwanto">
           <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
             <circle cx="70" cy="70" r="65" stroke="#3A5F2A" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.6"/>
-            <circle cx="70" cy="5" r="4" fill="#C1593C" opacity="0.85"/>
-            <circle cx="70" cy="135" r="4" fill="#C1593C" opacity="0.85"/>
-            <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
-            <circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
+            <circle cx="70" cy="5" r="4" fill="#C1593C" opacity="0.85"/><circle cx="70" cy="135" r="4" fill="#C1593C" opacity="0.85"/>
+            <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/><circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
           </svg>
         </div>
-        <p class="couple-role">Mempelai Pria</p>
+        <p class="couple-role">The Groom</p>
         <div class="couple-name">Pur</div>
         <div class="couple-fullname">Purwanto</div>
-        <div class="couple-parents">
-          Putra dari<br>
-          <strong>Bapak Artiyo</strong><br>
-          & <strong>Ibu Slamet</strong>
-        </div>
+        <div class="couple-parents">Putra dari<br><strong>Bpk. Artiyo</strong><br>& <strong>Ibu Slamet</strong></div>
       </div>
-      <!-- Center divider -->
+      <!-- Center -->
       <div class="couple-center">
         <div class="couple-center-line"></div>
         <div class="couple-amp-badge">&</div>
@@ -774,26 +307,21 @@
         </div>
         <div class="couple-center-line"></div>
       </div>
-      <!-- Pengantin Pria -->
+      <!-- Pengantin Wanita -->
       <div class="couple-col">
         <div class="couple-photo-wrap">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Desty Yani">
           <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
             <circle cx="70" cy="70" r="65" stroke="#3A5F2A" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.6"/>
-            <circle cx="70" cy="5" r="4" fill="#C1593C" opacity="0.85"/>
-            <circle cx="70" cy="135" r="4" fill="#C1593C" opacity="0.85"/>
-            <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
-            <circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
+            <circle cx="70" cy="5" r="4" fill="#C1593C" opacity="0.85"/><circle cx="70" cy="135" r="4" fill="#C1593C" opacity="0.85"/>
+            <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/><circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
           </svg>
         </div>
-        <p class="couple-role">Mempelai Wanita</p>
+        <p class="couple-role">The Bride</p>
         <div class="couple-name">Desty</div>
         <div class="couple-fullname">Desty Yani</div>
-        <div class="couple-parents">
-          Putra dari<br>
-          <strong>Bapak Sulaiman (Alm)</strong><br>
-          & <strong>Ibu Hayati</strong>
-        </div>
+        <!-- FIX: Putri (bukan Putra) -->
+        <div class="couple-parents">Putri dari<br><strong>Bpk. Sulaiman (Alm)</strong><br>& <strong>Ibu Hayati</strong></div>
       </div>
     </div>
   </div>
@@ -804,7 +332,6 @@
     <h2 class="sec-title">Our Love Story</h2>
     <p class="sec-sub">A glimpse of our journey together</p>
     <div class="story-list">
-
       <div class="story-item">
         <div class="story-dot"></div>
         <div class="story-body">
@@ -813,16 +340,14 @@
           <p class="story-desc">Dipertemukan karena Allah di sebuah Cafe Kota Pangkalpinang, bersama teman dan keluarga.</p>
         </div>
       </div>
-
       <div class="story-item">
         <div class="story-dot"></div>
         <div class="story-body">
           <span class="story-label">Mengenal Lebih Dalam</span>
           <span class="story-year">Juli – Desember 2025</span>
-          <p class="story-desc">Komunikasi dilakukan untuk meyakinkan perjalanan menuju ke jenjang pernikahan </p>
+          <p class="story-desc">Komunikasi dilakukan untuk meyakinkan perjalanan menuju ke jenjang pernikahan.</p>
         </div>
       </div>
-
       <div class="story-item">
         <div class="story-dot"></div>
         <div class="story-body">
@@ -831,7 +356,6 @@
           <p class="story-desc">Dengan keyakinan dan ridho orang tua, lamaran sederhana namun bermakna dilaksanakan.</p>
         </div>
       </div>
-
       <div class="story-item">
         <div class="story-dot"></div>
         <div class="story-body">
@@ -840,11 +364,10 @@
           <p class="story-desc">Dengan ridha Allah SWT, kami siap melangkah bersama melakukan ibadah terpanjang dalam hidup.</p>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- 4. SAVE THE DATE + COUNTDOWN -->
+  <!-- 4. SAVE THE DATE -->
   <div class="date-section fade-scale" id="section-home">
     <p class="sec-pre" style="color:#5A8A45;">Tanggal Pernikahan</p>
     <h2 class="sec-title" style="margin-bottom:24px;">Save The Date</h2>
@@ -863,22 +386,10 @@
       <div class="date-couple">Purwanto & Desty Yani</div>
     </div>
     <div class="countdown-grid">
-      <div class="countdown-item">
-        <span class="countdown-num" id="cd-hari">00</span>
-        <span class="countdown-lbl">Hari</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-num" id="cd-jam">00</span>
-        <span class="countdown-lbl">Jam</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-num" id="cd-menit">00</span>
-        <span class="countdown-lbl">Menit</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-num" id="cd-detik">00</span>
-        <span class="countdown-lbl">Detik</span>
-      </div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-hari">00</span><span class="countdown-lbl">Hari</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-jam">00</span><span class="countdown-lbl">Jam</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-menit">00</span><span class="countdown-lbl">Menit</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-detik">00</span><span class="countdown-lbl">Detik</span></div>
     </div>
     <br>
     <button class="btn-calendar" onclick="addToCalendar()">📅 Add to Calendar</button>
@@ -907,10 +418,7 @@
             <div class="event-row"><span class="event-ico">🕐</span><div>Pukul 08.00 WIB – 10.00</div></div>
             <div class="event-row">
               <span class="event-ico">📍</span>
-              <div>
-                <strong>Rumah Mempelai Wanita</strong>
-                <span>Jl. Gandaria 1 Gang. Pinang, Kel. Air Kepala Tujuh, Kec. Gerunggang, Kota Pangkalpinang</span>
-              </div>
+              <div><strong>Rumah Mempelai Wanita</strong><span>Jl. Gandaria 1 Gang. Pinang, Kel. Air Kepala Tujuh, Kec. Gerunggang, Kota Pangkalpinang</span></div>
             </div>
           </div>
           <div class="event-btns">
@@ -923,6 +431,7 @@
   </div>
 
   <!-- 6. GALLERY -->
+  <!-- FIX: semua foto pakai URL GitHub -->
   <div class="gallery-section fade-from-left" id="section-gallery">
     <p class="sec-pre">Galeri Kami</p>
     <h2 class="sec-title">Our Gallery</h2>
@@ -934,10 +443,10 @@
       </svg>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="/mnt/user-data/uploads/6E10327B-1DBB-40CA-BB41-AC68F6E2DA03.png" alt="Foto 1"></div>
-      <div class="gallery-item"><img src="/mnt/user-data/uploads/30623093-807D-4C72-BE0C-FC5A4AB0BCAB.png" alt="Foto 2"></div>
-      <div class="gallery-item"><img src="/mnt/user-data/uploads/542073C4-ECDB-435A-98FA-774A2F5F3141.png" alt="Foto 3"></div>
-      <div class="gallery-item"><img src="/mnt/user-data/uploads/01520846-8856-4C05-824C-D999F2DEC262.png" alt="Foto 4"></div>
+      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Foto 1"></div>
+      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Foto 2"></div>
+      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 3"></div>
+      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 4"></div>
     </div>
   </div>
 
@@ -966,10 +475,11 @@
     <div class="ucapan-list scrollbar-hide" id="ucapan-list"></div>
   </div>
 
-  <!-- 8. FOOTER / THANK YOU -->
+  <!-- 8. FOOTER -->
   <div class="footer-section fade-up-slow">
     <div class="footer-photo">
-      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty-pur.png" alt="Purwanto & Desty Yani">
+      <!-- FIX: nama file pur-desty (bukan desty-pur) -->
+      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Purwanto & Desty Yani">
     </div>
     <div class="footer-title">Thank You</div>
     <p class="footer-text">
@@ -991,12 +501,9 @@
     <div class="footer-vine">
       <svg viewBox="0 0 280 36" width="260" xmlns="http://www.w3.org/2000/svg" fill="none">
         <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.4"/>
-        <circle cx="10" cy="18" r="7" fill="#C1593C" opacity="0.7"/>
-        <circle cx="55" cy="11" r="5" fill="#3A5F2A" opacity="0.62"/>
-        <circle cx="105" cy="19" r="6" fill="#C1593C" opacity="0.58"/>
-        <circle cx="140" cy="18" r="5" fill="#3A5F2A" opacity="0.58"/>
-        <circle cx="178" cy="24" r="6" fill="#C1593C" opacity="0.62"/>
-        <circle cx="225" cy="16" r="5" fill="#3A5F2A" opacity="0.58"/>
+        <circle cx="10" cy="18" r="7" fill="#C1593C" opacity="0.7"/><circle cx="55" cy="11" r="5" fill="#3A5F2A" opacity="0.62"/>
+        <circle cx="105" cy="19" r="6" fill="#C1593C" opacity="0.58"/><circle cx="140" cy="18" r="5" fill="#3A5F2A" opacity="0.58"/>
+        <circle cx="178" cy="24" r="6" fill="#C1593C" opacity="0.62"/><circle cx="225" cy="16" r="5" fill="#3A5F2A" opacity="0.58"/>
         <circle cx="270" cy="18" r="7" fill="#C1593C" opacity="0.7"/>
       </svg>
     </div>
@@ -1015,16 +522,19 @@
   <button class="nav-btn" onclick="scrollToSection('section-rsvp')" title="Ucapan">✉️</button>
 </div>
 
+<!-- MUSIK -->
+<audio id="music" loop>
+  <source src="https://raw.githubusercontent.com/destyyani/und-nikah/main/For%20The%20Rest%20of%20My%20Life%20-%20Maher%20Zain%20(Aan).mp3" type="audio/mpeg">
+</audio>
+<button onclick="toggleMusic()" id="music-btn"
+  style="position:fixed;bottom:80px;right:20px;z-index:999;background:var(--forest);border:none;color:#fff;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:1.1rem;box-shadow:0 4px 12px rgba(58,95,42,0.35);display:none;align-items:center;justify-content:center;">🔊</button>
+
 <script>
-  // URL PARAMETER — cara pakai: undangan.html?kepada=Nama+Tamu
   const params = new URLSearchParams(window.location.search);
   const guestName = params.get('kepada') || params.get('nama') || params.get('to') || 'Bapak/Ibu/Saudara/i';
-
-  // Isi semua elemen dengan nama tamu
   document.querySelectorAll('.tamu-name').forEach(el => el.textContent = guestName);
 
   window.addEventListener('DOMContentLoaded', () => {
-    // Auto-isi form RSVP
     const el = document.getElementById('rsvp-nama');
     if (el && !el.value && guestName !== 'Bapak/Ibu/Saudara/i') el.value = guestName;
   });
@@ -1033,8 +543,22 @@
     document.getElementById('cover').classList.add('hidden');
     document.getElementById('main').classList.add('visible');
     document.getElementById('floatingNav').style.display = 'flex';
+    const btn = document.getElementById('music-btn');
+    btn.style.display = 'flex';
+    btn.style.alignItems = 'center';
+    btn.style.justifyContent = 'center';
     setTimeout(initObserver, 300);
     startCountdown();
+    const music = document.getElementById('music');
+    music.volume = 0.5;
+    music.play().catch(() => {});
+  }
+
+  function toggleMusic() {
+    const music = document.getElementById('music');
+    const btn = document.getElementById('music-btn');
+    if (music.paused) { music.play(); btn.textContent = '🔊'; }
+    else { music.pause(); btn.textContent = '🔇'; }
   }
 
   function scrollToSection(id) {
@@ -1042,37 +566,21 @@
   }
 
   function initObserver() {
-    const animSelectors = [
-      '.fade-in',
-      '.fade-from-left',
-      '.fade-from-right',
-      '.fade-scale',
-      '.fade-up-slow'
-    ].join(',');
-
+    const sel = '.fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow';
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          // Masuk layar → munculkan
-          e.target.classList.add('visible');
-        } else {
-          // Keluar layar → reset, siap animasi lagi saat scroll balik
-          e.target.classList.remove('visible');
-        }
+        if (e.isIntersecting) e.target.classList.add('visible');
+        else e.target.classList.remove('visible');
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll(animSelectors).forEach(el => obs.observe(el));
+    document.querySelectorAll(sel).forEach(el => obs.observe(el));
   }
 
   function startCountdown() {
     const target = new Date('2026-06-21T08:00:00');
     function update() {
       const diff = target - new Date();
-      if (diff <= 0) {
-        ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent = '00');
-        return;
-      }
+      if (diff <= 0) { ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent='00'); return; }
       document.getElementById('cd-hari').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
       document.getElementById('cd-jam').textContent   = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
       document.getElementById('cd-menit').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
@@ -1082,8 +590,7 @@
   }
 
   function addToCalendar() {
-    const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Purwanto+%26+Desty+Yani&dates=20260621T010000Z/20260621T080000Z&details=Pernikahan+Purwanto+%26+Desty+Yani&location=Jl.+Gandaria+1,+Pangkalpinang';
-    window.open(url, '_blank');
+    window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Purwanto+%26+Desty+Yani&dates=20260621T010000Z/20260621T080000Z&details=Pernikahan+Purwanto+%26+Desty+Yani&location=Jl.+Gandaria+1,+Pangkalpinang','_blank');
   }
 
   const ucapanData = [
@@ -1101,30 +608,22 @@
   }
 
   function submitRSVP() {
-    const nama   = document.getElementById('rsvp-nama').value.trim();
-    const ucapan = document.getElementById('rsvp-ucapan').value.trim();
-    const hadir  = document.getElementById('rsvp-hadir').value;
-    if (!nama || !ucapan || !hadir) { showToast('Lengkapi semua isian.'); return; }
-    ucapanData.push({ nama, ucapan, hadir });
+    const nama=document.getElementById('rsvp-nama').value.trim();
+    const ucapan=document.getElementById('rsvp-ucapan').value.trim();
+    const hadir=document.getElementById('rsvp-hadir').value;
+    if (!nama||!ucapan||!hadir) { showToast('Lengkapi semua isian.'); return; }
+    ucapanData.push({nama,ucapan,hadir});
     renderUcapan();
-    document.getElementById('rsvp-nama').value   = '';
-    document.getElementById('rsvp-ucapan').value = '';
-    document.getElementById('rsvp-hadir').value  = '';
+    document.getElementById('rsvp-nama').value='';
+    document.getElementById('rsvp-ucapan').value='';
+    document.getElementById('rsvp-hadir').value='';
     showToast('Ucapan terkirim ✿');
   }
 
-  function copyText(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.textContent = '✓ Disalin';
-      showToast('Nomor rekening disalin!');
-      setTimeout(() => btn.textContent = 'Salin', 2000);
-    });
-  }
-
   function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2800);
   }
 
   renderUcapan();
