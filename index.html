@@ -187,6 +187,24 @@
   .fade-scale{transform:scale(0.96) translateY(24px);transform-origin:center top}
   .fade-up-slow{transform:translateY(56px);transition-duration:1.1s}
   .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,.fade-scale.visible,.fade-up-slow.visible{opacity:1;transform:none}
+
+  /* Animasi konten dalam section (stagger) */
+  .anim-child {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .anim-child.visible { opacity: 1; transform: none; }
+
+  /* Khusus foto mempelai: scale in */
+  .anim-child-scale {
+    opacity: 0;
+    transform: scale(0.88);
+    transition: opacity 0.7s cubic-bezier(0.34,1.56,0.64,1),
+                transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .anim-child-scale.visible { opacity: 1; transform: scale(1); }
 </style>
 </head>
 <body>
@@ -258,27 +276,27 @@
 
   <!-- 1. AYAT -->
   <div class="ayat-section fade-scale" id="section-ayat">
-    <p class="ayat-basmalah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
-    <span class="ayat-quote">"</span>
-    <p class="ayat-text">Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa cinta dan kasih sayang.</p>
-    <div class="arc-div">
+    <p class="ayat-basmalah anim-child">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+    <span class="ayat-quote anim-child">"</span>
+    <p class="ayat-text anim-child">Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari (jenis) dirimu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa cinta dan kasih sayang.</p>
+    <div class="arc-div anim-child">
       <svg viewBox="0 0 110 18" xmlns="http://www.w3.org/2000/svg">
         <path d="M2,15 Q27,3 50,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.7"/>
         <circle cx="55" cy="9" r="3.5" fill="#C1593C" opacity="0.85"/>
         <path d="M60,15 Q83,3 108,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.7"/>
       </svg>
     </div>
-    <p class="ayat-ref">— QS. Ar-Rum : 21 —</p>
+    <p class="ayat-ref anim-child">— QS. Ar-Rum : 21 —</p>
   </div>
 
   <!-- 2. MEMPELAI -->
   <div class="couple-section fade-up-slow" id="section-couple">
-    <p class="sec-pre">Mempelai</p>
-    <h2 class="sec-title">Kami yang Berbahagia</h2>
+    <p class="sec-pre anim-child">Mempelai</p>
+    <h2 class="sec-title anim-child">Kami yang Berbahagia</h2>
     <div class="couple-row">
       <!-- Pengantin Pria -->
       <div class="couple-col">
-        <div class="couple-photo-wrap">
+        <div class="couple-photo-wrap anim-child-scale">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Purwanto">
           <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
             <circle cx="70" cy="70" r="65" stroke="#3A5F2A" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.6"/>
@@ -309,7 +327,7 @@
       </div>
       <!-- Pengantin Wanita -->
       <div class="couple-col">
-        <div class="couple-photo-wrap">
+        <div class="couple-photo-wrap anim-child-scale">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Desty Yani">
           <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
             <circle cx="70" cy="70" r="65" stroke="#3A5F2A" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.6"/>
@@ -479,7 +497,7 @@
   <div class="footer-section fade-up-slow">
     <div class="footer-photo">
       <!-- FIX: nama file pur-desty (bukan desty-pur) -->
-      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty-pur.png" alt="Purwanto & Desty Yani">
+      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Purwanto & Desty Yani">
     </div>
     <div class="footer-title">Thank You</div>
     <p class="footer-text">
@@ -529,8 +547,26 @@
 <button onclick="toggleMusic()" id="music-btn"
   style="position:fixed;bottom:80px;right:20px;z-index:999;background:var(--forest);border:none;color:#fff;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:1.1rem;box-shadow:0 4px 12px rgba(58,95,42,0.35);display:none;align-items:center;justify-content:center;">🔊</button>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyC29i4Rjs-aC2vz_etQPSeaaRNj8o3_kNs",
+    authDomain: "und-nikah.firebaseapp.com",
+    projectId: "und-nikah",
+    storageBucket: "und-nikah.firebasestorage.app",
+    messagingSenderId: "268101619850",
+    appId: "1:268101619850:web:106cd0a2fbfbf555c51d73"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // ── Nama tamu dari URL ──
+  const params    = new URLSearchParams(window.location.search);
   const guestName = params.get('kepada') || params.get('nama') || params.get('to') || 'Bapak/Ibu/Saudara/i';
   document.querySelectorAll('.tamu-name').forEach(el => el.textContent = guestName);
 
@@ -539,7 +575,8 @@
     if (el && !el.value && guestName !== 'Bapak/Ibu/Saudara/i') el.value = guestName;
   });
 
-  function openInvitation() {
+  // ── Buka undangan ──
+  window.openInvitation = function() {
     document.getElementById('cover').classList.add('hidden');
     document.getElementById('main').classList.add('visible');
     document.getElementById('floatingNav').style.display = 'flex';
@@ -547,86 +584,139 @@
     btn.style.display = 'flex';
     btn.style.alignItems = 'center';
     btn.style.justifyContent = 'center';
+
+    setTimeout(() => {
+      document.querySelector('.ayat-section').classList.add('visible');
+      document.querySelectorAll('.ayat-section .anim-child').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 180);
+      });
+    }, 400);
+    setTimeout(() => {
+      document.querySelector('.couple-section').classList.add('visible');
+      document.querySelectorAll('.couple-section .anim-child, .couple-section .anim-child-scale').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 180);
+      });
+    }, 700);
+
     setTimeout(initObserver, 300);
     startCountdown();
     const music = document.getElementById('music');
     music.volume = 0.5;
     music.play().catch(() => {});
-  }
+  };
 
-  function toggleMusic() {
+  // ── Toggle musik ──
+  window.toggleMusic = function() {
     const music = document.getElementById('music');
-    const btn = document.getElementById('music-btn');
+    const btn   = document.getElementById('music-btn');
     if (music.paused) { music.play(); btn.textContent = '🔊'; }
     else { music.pause(); btn.textContent = '🔇'; }
-  }
+  };
 
-  function scrollToSection(id) {
+  // ── Scroll nav ──
+  window.scrollToSection = function(id) {
     document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
-  }
+  };
 
+  // ── Scroll observer ──
   function initObserver() {
     const sel = '.fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow';
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-        else e.target.classList.remove('visible');
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 180);
+          });
+        } else {
+          e.target.classList.remove('visible');
+          e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach(el => el.classList.remove('visible'));
+        }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll(sel).forEach(el => obs.observe(el));
   }
 
+  // ── Countdown ──
   function startCountdown() {
     const target = new Date('2026-06-21T08:00:00');
     function update() {
       const diff = target - new Date();
-      if (diff <= 0) { ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent='00'); return; }
-      document.getElementById('cd-hari').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
-      document.getElementById('cd-jam').textContent   = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-      document.getElementById('cd-menit').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-      document.getElementById('cd-detik').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+      if (diff <= 0) {
+        ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent = '00');
+        return;
+      }
+      document.getElementById('cd-hari').textContent   = String(Math.floor(diff/86400000)).padStart(2,'0');
+      document.getElementById('cd-jam').textContent    = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+      document.getElementById('cd-menit').textContent  = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+      document.getElementById('cd-detik').textContent  = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
     }
     update(); setInterval(update, 1000);
   }
 
-  function addToCalendar() {
+  // ── Kalender ──
+  window.addToCalendar = function() {
     window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Purwanto+%26+Desty+Yani&dates=20260621T010000Z/20260621T080000Z&details=Pernikahan+Purwanto+%26+Desty+Yani&location=Jl.+Gandaria+1,+Pangkalpinang','_blank');
-  }
+  };
 
-  const ucapanData = [
-    { nama:'Ahmad Fauzi', ucapan:'Selamat menempuh hidup baru, semoga sakinah, mawaddah wa rahmah 🌿', hadir:'hadir' },
-    { nama:'Siti Rahayu', ucapan:'Barakallah wa barak alaik. Semoga selalu dalam lindungan Allah SWT ✿', hadir:'hadir' },
-  ];
+  // ── Toast ──
+  window.showToast = function(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  };
 
-  function renderUcapan() {
-    document.getElementById('ucapan-list').innerHTML = ucapanData.slice().reverse().map(u => `
-      <div class="ucapan-item">
+  // ══════════════════════════════
+  //  FIREBASE — Render ucapan realtime
+  // ══════════════════════════════
+  const ucapanCol = collection(db, 'ucapan');
+  const ucapanQuery = query(ucapanCol, orderBy('timestamp', 'desc'));
+
+  // Listen realtime — update otomatis saat ada ucapan baru
+  onSnapshot(ucapanQuery, (snapshot) => {
+    const list = document.getElementById('ucapan-list');
+    if (snapshot.empty) {
+      list.innerHTML = '<p style="text-align:center;font-family:\'Caveat\',cursive;color:#999;font-size:0.9rem;padding:20px 0;">Belum ada ucapan. Jadilah yang pertama! 🌿</p>';
+      return;
+    }
+    const hadirLabel = { hadir:'✅ Akan Hadir', tidak:'❌ Tidak Dapat Hadir', mungkin:'🌿 Insya Allah Hadir' };
+    list.innerHTML = snapshot.docs.map((doc, i) => {
+      const u = doc.data();
+      const cls = ['#FFF9C4','#C8E6C9','#FFE0CC','#E1D5F0'][i % 4];
+      const rot = ['-0.8deg','0.6deg','-0.5deg','0.8deg'][i % 4];
+      return `<div class="ucapan-item" style="background:${cls};transform:rotate(${rot})">
         <div class="ucapan-name">${u.nama}</div>
         <div class="ucapan-msg">${u.ucapan}</div>
-        <div class="ucapan-status">${u.hadir==='hadir'?'✅ Akan Hadir':u.hadir==='tidak'?'❌ Tidak Dapat Hadir':'🌿 Insya Allah Hadir'}</div>
-      </div>`).join('');
-  }
+        <div class="ucapan-status">${hadirLabel[u.hadir] || ''}</div>
+      </div>`;
+    }).join('');
+  });
 
-  function submitRSVP() {
-    const nama=document.getElementById('rsvp-nama').value.trim();
-    const ucapan=document.getElementById('rsvp-ucapan').value.trim();
-    const hadir=document.getElementById('rsvp-hadir').value;
-    if (!nama||!ucapan||!hadir) { showToast('Lengkapi semua isian.'); return; }
-    ucapanData.push({nama,ucapan,hadir});
-    renderUcapan();
-    document.getElementById('rsvp-nama').value='';
-    document.getElementById('rsvp-ucapan').value='';
-    document.getElementById('rsvp-hadir').value='';
-    showToast('Ucapan terkirim ✿');
-  }
+  // ── Submit RSVP ke Firebase ──
+  window.submitRSVP = async function() {
+    const nama   = document.getElementById('rsvp-nama').value.trim();
+    const ucapan = document.getElementById('rsvp-ucapan').value.trim();
+    const hadir  = document.getElementById('rsvp-hadir').value;
+    if (!nama || !ucapan || !hadir) { showToast('Lengkapi semua isian.'); return; }
 
-  function showToast(msg) {
-    const t=document.getElementById('toast');
-    t.textContent=msg; t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2800);
-  }
+    const btn = document.querySelector('.btn-kirim');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Mengirim...';
 
-  renderUcapan();
+    try {
+      await addDoc(ucapanCol, { nama, ucapan, hadir, timestamp: serverTimestamp() });
+      document.getElementById('rsvp-nama').value   = '';
+      document.getElementById('rsvp-ucapan').value = '';
+      document.getElementById('rsvp-hadir').value  = '';
+      showToast('Ucapan terkirim ✿');
+    } catch (err) {
+      showToast('Gagal mengirim, coba lagi.');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M2,21L23,12 2,3 2,10 17,12 2,14Z"/></svg> Kirim Ucapan';
+    }
+  };
 </script>
 </body>
 </html>
