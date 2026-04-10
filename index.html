@@ -191,9 +191,9 @@
   .fade-scale     { transform:scale(0.97) translateY(20px); transform-origin:center top }
   .fade-up-slow   {
     transform:translateY(32px);
-    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
-                transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    transition-delay: 0s;
+    transition: opacity 1.3s cubic-bezier(0.16,1,0.3,1),
+                transform 1.3s cubic-bezier(0.16,1,0.3,1);
+    transition-delay: 0.25s;
   }
   .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,
   .fade-scale.visible,.fade-up-slow.visible { opacity:1; transform:none }
@@ -665,31 +665,37 @@
   // Observer dengan deteksi arah scroll
   function initObserver() {
     let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', () => { lastScrollY = window.scrollY; }, { passive:true });
+    window.addEventListener('scroll', () => {
+      lastScrollY = window.scrollY;
+    }, { passive:true });
 
     const sel = '.fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow';
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        const goingDown = window.scrollY >= lastScrollY;
         if (e.isIntersecting) {
+          const goingDown = e.boundingClientRect.top > 0;
           e.target.classList.add('visible');
-          const children = e.target.querySelectorAll('.anim-child, .anim-child-scale');
-const timers = [];
-children.forEach((el, i) => {
-  if (el.classList.contains('anim-child')) {
-    goingDown ? el.classList.remove('from-top') : el.classList.add('from-top');
-  }
-  timers.push(setTimeout(() => el.classList.add('visible'), 60 + i * 60));
-});
-e.target._timers = timers;
+          // Batalkan timer sebelumnya jika ada
+          if (e.target._timers) e.target._timers.forEach(t => clearTimeout(t));
+          const timers = [];
+          e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach((el, i) => {
+            if (el.classList.contains('anim-child')) {
+              goingDown ? el.classList.remove('from-top') : el.classList.add('from-top');
+            }
+            timers.push(setTimeout(() => el.classList.add('visible'), 60 + i * 60));
+          });
+          e.target._timers = timers;
         } else {
+          // Batalkan timer yang belum selesai
+          if (e.target._timers) e.target._timers.forEach(t => clearTimeout(t));
+          e.target._timers = [];
           e.target.classList.remove('visible');
           e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach(el => {
             el.classList.remove('visible', 'from-top');
           });
         }
       });
-    }, { threshold: 0.35, rootMargin: '0px 0px -120px 0px' });
+    }, { threshold: 0.25, rootMargin: '0px 0px -80px 0px' });
     document.querySelectorAll(sel).forEach(el => obs.observe(el));
   }
 
