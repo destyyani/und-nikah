@@ -44,6 +44,9 @@
   .sec-title{font-family:'Dancing Script',cursive;font-size:2.4rem;font-weight:700;color:var(--forest);text-align:center}
   .sec-sub{font-family:'Lato',sans-serif;font-weight:300;font-size:0.7rem;color:var(--kraft);text-align:center;margin-top:5px}
 
+  /* BOTANICAL DIVIDER */
+  .botanical-divider{background:var(--paper);padding:16px 0;display:flex;align-items:center;justify-content:center;line-height:0}
+
   /* 1. AYAT */
   .ayat-section{background:#FDF8F5;padding:58px 32px 52px;text-align:center}
   .ayat-basmalah{font-family:'Lora',serif;font-size:1.2rem;color:var(--forest);direction:rtl;margin-bottom:22px;line-height:1.9}
@@ -176,35 +179,41 @@
   .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--forest);color:#fff;font-family:'Lato',sans-serif;font-size:0.78rem;padding:10px 22px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap;border-radius:50px;box-shadow:0 4px 14px rgba(58,95,42,0.3)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* SCROLL TRIGGER ANIMATIONS */
-  .fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow{
-    opacity:0;will-change:opacity,transform;
-    transition:opacity 0.85s cubic-bezier(0.22,1,0.36,1),transform 0.85s cubic-bezier(0.22,1,0.36,1)
+  /* ══ ANIMASI SCROLL TRIGGER ══ */
+  .fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow {
+    opacity:0; will-change:opacity,transform;
+    transition: opacity 1s cubic-bezier(0.16,1,0.3,1),
+                transform 1s cubic-bezier(0.16,1,0.3,1);
   }
-  .fade-in{transform:translateY(40px)}
-  .fade-from-left{transform:translate(-50px,20px)}
-  .fade-from-right{transform:translate(50px,20px)}
-  .fade-scale{transform:scale(0.96) translateY(24px);transform-origin:center top}
-  .fade-up-slow{transform:translateY(56px);transition-duration:1.1s}
-  .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,.fade-scale.visible,.fade-up-slow.visible{opacity:1;transform:none}
+  .fade-in        { transform:translateY(36px) }
+  .fade-from-left { transform:translate(-44px,16px) }
+  .fade-from-right{ transform:translate(44px,16px) }
+  .fade-scale     { transform:scale(0.97) translateY(20px); transform-origin:center top }
+  .fade-up-slow   {
+    transform:translateY(32px);
+    transition: opacity 1.3s cubic-bezier(0.16,1,0.3,1),
+                transform 1.3s cubic-bezier(0.16,1,0.3,1);
+    transition-delay: 0.12s;
+  }
+  .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,
+  .fade-scale.visible,.fade-up-slow.visible { opacity:1; transform:none }
 
-  /* Animasi konten dalam section (stagger) */
+  /* Konten dalam section */
   .anim-child {
-    opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
-                transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    opacity:0; transform:translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+                transform 0.6s cubic-bezier(0.16,1,0.3,1);
   }
-  .anim-child.visible { opacity: 1; transform: none; }
+  .anim-child.visible  { opacity:1; transform:none }
+  .anim-child.from-top { transform:translateY(-24px) }
 
-  /* Khusus foto mempelai: scale in */
+  /* Foto scale in */
   .anim-child-scale {
-    opacity: 0;
-    transform: scale(0.88);
-    transition: opacity 0.7s cubic-bezier(0.34,1.56,0.64,1),
-                transform 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    opacity:0; transform:scale(0.9) translateY(16px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1),
+                transform 0.8s cubic-bezier(0.16,1,0.3,1);
   }
-  .anim-child-scale.visible { opacity: 1; transform: scale(1); }
+  .anim-child-scale.visible { opacity:1; transform:none }
 </style>
 </head>
 <body>
@@ -252,9 +261,7 @@
 
   <div class="cover-content">
     <p class="cover-pre">Walimatul Ursy</p>
-    <div class="cover-names">
-      Purwanto<br><span class="amp">&</span>Desty Yani
-    </div>
+    <div class="cover-names">Purwanto<br><span class="amp">&</span>Desty Yani</div>
     <div class="cover-arc">
       <svg viewBox="0 0 110 18" width="110" height="18" xmlns="http://www.w3.org/2000/svg">
         <path d="M2,15 Q27,3 50,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.7"/>
@@ -289,12 +296,25 @@
     <p class="ayat-ref anim-child">— QS. Ar-Rum : 21 —</p>
   </div>
 
+  <!-- DIVIDER 1: Ayat → Mempelai -->
+  <div class="botanical-divider">
+    <svg viewBox="0 0 280 36" width="240" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="10" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+      <circle cx="55" cy="11" r="4" fill="#3A5F2A" opacity="0.6"/>
+      <circle cx="105" cy="19" r="5" fill="#C1593C" opacity="0.55"/>
+      <circle cx="140" cy="18" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="178" cy="24" r="5" fill="#C1593C" opacity="0.6"/>
+      <circle cx="225" cy="16" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="270" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+    </svg>
+  </div>
+
   <!-- 2. MEMPELAI -->
   <div class="couple-section fade-up-slow" id="section-couple">
     <p class="sec-pre anim-child">Mempelai</p>
     <h2 class="sec-title anim-child">Kami yang Berbahagia</h2>
     <div class="couple-row">
-      <!-- Pengantin Pria -->
       <div class="couple-col">
         <div class="couple-photo-wrap anim-child-scale">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Purwanto">
@@ -304,12 +324,11 @@
             <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/><circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
           </svg>
         </div>
-        <p class="couple-role">The Groom</p>
-        <div class="couple-name">Pur</div>
-        <div class="couple-fullname">Purwanto</div>
-        <div class="couple-parents">Putra dari<br><strong>Bpk. Artiyo</strong><br>& <strong>Ibu Slamet</strong></div>
+        <p class="couple-role anim-child">Mempelai Pria</p>
+        <div class="couple-name anim-child">Pur</div>
+        <div class="couple-fullname anim-child">Purwanto</div>
+        <div class="couple-parents anim-child">Putra dari<br><strong>Bpk. Artiyo</strong><br>& <strong>Ibu Slamet</strong></div>
       </div>
-      <!-- Center -->
       <div class="couple-center">
         <div class="couple-center-line"></div>
         <div class="couple-amp-badge">&</div>
@@ -325,7 +344,6 @@
         </div>
         <div class="couple-center-line"></div>
       </div>
-      <!-- Pengantin Wanita -->
       <div class="couple-col">
         <div class="couple-photo-wrap anim-child-scale">
           <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Desty Yani">
@@ -335,61 +353,88 @@
             <circle cx="5" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/><circle cx="135" cy="70" r="3.5" fill="#C9943A" opacity="0.75"/>
           </svg>
         </div>
-        <p class="couple-role">The Bride</p>
-        <div class="couple-name">Desty</div>
-        <div class="couple-fullname">Desty Yani</div>
-        <!-- FIX: Putri (bukan Putra) -->
-        <div class="couple-parents">Putri dari<br><strong>Bpk. Sulaiman (Alm)</strong><br>& <strong>Ibu Hayati</strong></div>
+        <p class="couple-role anim-child">Mempelai Wanita</p>
+        <div class="couple-name anim-child">Desty</div>
+        <div class="couple-fullname anim-child">Desty Yani</div>
+        <div class="couple-parents anim-child">Putri dari<br><strong>Bpk. Sulaiman (Alm)</strong><br>& <strong>Ibu Hayati</strong></div>
       </div>
     </div>
+  </div>
+
+  <!-- DIVIDER 2: Mempelai → Love Story -->
+  <div class="botanical-divider">
+    <svg viewBox="0 0 280 36" width="240" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="10" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+      <circle cx="55" cy="11" r="4" fill="#3A5F2A" opacity="0.6"/>
+      <circle cx="105" cy="19" r="5" fill="#C1593C" opacity="0.55"/>
+      <circle cx="140" cy="18" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="178" cy="24" r="5" fill="#C1593C" opacity="0.6"/>
+      <circle cx="225" cy="16" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="270" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+    </svg>
   </div>
 
   <!-- 3. LOVE STORY -->
   <div class="story-section fade-from-left">
-    <p class="sec-pre">Cerita Kami</p>
-    <h2 class="sec-title">Our Love Story</h2>
-    <p class="sec-sub">A glimpse of our journey together</p>
+    <p class="sec-pre anim-child">Kisah yang Allah telah rencanakan</p>
+    <h2 class="sec-title anim-child">Cerita Kami</h2>
+    <p class="sec-sub anim-child">Ada tiga hal yang dilakukan manusia untuk memenuhi harapannya, Ikhtiar, doa dan ikhlas. Sekelumit kisah masa perjumpaan kami hingga menuju pernikahan</p>
     <div class="story-list">
-      <div class="story-item">
+      <div class="story-item anim-child">
         <div class="story-dot"></div>
         <div class="story-body">
           <span class="story-label">Pertemuan Pertama</span>
           <span class="story-year">19 Juli 2025</span>
-          <p class="story-desc">Dipertemukan karena Allah di sebuah Cafe Kota Pangkalpinang, bersama teman dan keluarga.</p>
+          <p class="story-desc">Ada masa dimana kami sudah dalam fase ridho akan ketetapan Allah. Perjumpaan yang direncakan melalui niat mulia teman dan saudara.</p>
         </div>
       </div>
-      <div class="story-item">
+      <div class="story-item anim-child">
         <div class="story-dot"></div>
         <div class="story-body">
-          <span class="story-label">Mengenal Lebih Dalam</span>
+          <span class="story-label">Berlanjut</span>
           <span class="story-year">Juli – Desember 2025</span>
-          <p class="story-desc">Komunikasi dilakukan untuk meyakinkan perjalanan menuju ke jenjang pernikahan.</p>
+          <p class="story-desc">Pada masa ini, ikhtiar dijalin melalui komunikasi dan doa untuk memantapkan hati bahwa ini adalah pilihan terbaik dari Allah.</p>
         </div>
       </div>
-      <div class="story-item">
+      <div class="story-item anim-child">
         <div class="story-dot"></div>
         <div class="story-body">
           <span class="story-label">Lamaran</span>
           <span class="story-year">25 Desember 2025</span>
-          <p class="story-desc">Dengan keyakinan dan ridho orang tua, lamaran sederhana namun bermakna dilaksanakan.</p>
+          <p class="story-desc">Dengan keyakinan dan restu orang tua, lamaran sederhana namun bermakna dilangsungkan.</p>
         </div>
       </div>
-      <div class="story-item">
+      <div class="story-item anim-child">
         <div class="story-dot"></div>
         <div class="story-body">
-          <span class="story-label">Menuju Pelaminan</span>
+          <span class="story-label">Mitsaqan Ghalidza</span>
           <span class="story-year">21 Juni 2026</span>
-          <p class="story-desc">Dengan ridha Allah SWT, kami siap melangkah bersama melakukan ibadah terpanjang dalam hidup.</p>
+          <p class="story-desc">Sebuah perjanjian kokoh di hadapan Allah SWT akan diucapkan. Penanda dimulainya ibadah terpanjang dalam hidup kami.</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- DIVIDER 3: Love Story → Save The Date -->
+  <div class="botanical-divider">
+    <svg viewBox="0 0 280 36" width="240" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="10" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+      <circle cx="55" cy="11" r="4" fill="#3A5F2A" opacity="0.6"/>
+      <circle cx="105" cy="19" r="5" fill="#C1593C" opacity="0.55"/>
+      <circle cx="140" cy="18" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="178" cy="24" r="5" fill="#C1593C" opacity="0.6"/>
+      <circle cx="225" cy="16" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="270" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+    </svg>
+  </div>
+
   <!-- 4. SAVE THE DATE -->
   <div class="date-section fade-scale" id="section-home">
-    <p class="sec-pre" style="color:#5A8A45;">Tanggal Pernikahan</p>
-    <h2 class="sec-title" style="margin-bottom:24px;">Save The Date</h2>
-    <div class="date-card">
+    <p class="sec-pre anim-child" style="color:#5A8A45;">Tanggal Pernikahan</p>
+    <h2 class="sec-title anim-child" style="margin-bottom:24px;">Catat Tanggalnya</h2>
+    <div class="date-card anim-child">
       <div class="date-stripe"></div>
       <p class="date-day">Minggu</p>
       <div class="date-num">21</div>
@@ -403,27 +448,27 @@
       </div>
       <div class="date-couple">Purwanto & Desty Yani</div>
     </div>
-    <div class="countdown-grid">
+    <div class="countdown-grid anim-child">
       <div class="countdown-item"><span class="countdown-num" id="cd-hari">00</span><span class="countdown-lbl">Hari</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-jam">00</span><span class="countdown-lbl">Jam</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-menit">00</span><span class="countdown-lbl">Menit</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-detik">00</span><span class="countdown-lbl">Detik</span></div>
     </div>
     <br>
-    <button class="btn-calendar" onclick="addToCalendar()">📅 Add to Calendar</button>
+    <button class="btn-calendar anim-child" onclick="addToCalendar()">📅 Tambahkan ke Kalender</button>
   </div>
 
   <!-- 5. WEDDING EVENTS -->
   <div class="events-section fade-from-right" id="section-event">
-    <p class="sec-pre">Jadwal Acara</p>
-    <h2 class="sec-title">Wedding Events</h2>
-    <p class="sec-sub">We invite you to join our special moments</p>
+    <p class="sec-pre anim-child">Acara</p>
+    <h2 class="sec-title anim-child">Rangkaian Acara </h2>
+    <p class="sec-sub anim-child">Kamu mengundang Bapak/Ibu/Saudara/i semua untuk hadir dalam momen bahagia kami</p>
     <div class="events-grid">
-      <div class="event-card">
+      <div class="event-card anim-child">
         <div class="event-stripe"></div>
         <div class="event-body">
           <span class="event-icon">🕌</span>
-          <div class="event-name">Akad Nikah</div>
+          <div class="event-name">Akad Nikah dan Resepsi</div>
           <div class="arc-div">
             <svg viewBox="0 0 110 18" xmlns="http://www.w3.org/2000/svg">
               <path d="M2,15 Q27,3 50,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.6"/>
@@ -433,7 +478,7 @@
           </div>
           <div class="event-info">
             <div class="event-row"><span class="event-ico">📅</span><div><strong>Minggu, 21 Juni 2026</strong></div></div>
-            <div class="event-row"><span class="event-ico">🕐</span><div>Pukul 08.00 WIB – 10.00</div></div>
+            <div class="event-row"><span class="event-ico">🕐</span><div>Pukul 08.00 WIB – 14.00</div></div>
             <div class="event-row">
               <span class="event-ico">📍</span>
               <div><strong>Rumah Mempelai Wanita</strong><span>Jl. Gandaria 1 Gang. Pinang, Kel. Air Kepala Tujuh, Kec. Gerunggang, Kota Pangkalpinang</span></div>
@@ -449,11 +494,10 @@
   </div>
 
   <!-- 6. GALLERY -->
-  <!-- FIX: semua foto pakai URL GitHub -->
   <div class="gallery-section fade-from-left" id="section-gallery">
-    <p class="sec-pre">Galeri Kami</p>
-    <h2 class="sec-title">Our Gallery</h2>
-    <div class="arc-div" style="margin-bottom:0;">
+    <p class="sec-pre anim-child">Galeri Kami</p>
+    <h2 class="sec-title anim-child">Koleksi Sketsa</h2>
+    <div class="arc-div anim-child" style="margin-bottom:0;">
       <svg viewBox="0 0 110 18" xmlns="http://www.w3.org/2000/svg">
         <path d="M2,15 Q27,3 50,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.6"/>
         <circle cx="55" cy="9" r="3" fill="#C1593C" opacity="0.75"/>
@@ -461,21 +505,21 @@
       </svg>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Foto 1"></div>
-      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Foto 2"></div>
-      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 3"></div>
-      <div class="gallery-item"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 4"></div>
+      <div class="gallery-item anim-child"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur.png" alt="Foto 1"></div>
+      <div class="gallery-item anim-child"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty.png" alt="Foto 2"></div>
+      <div class="gallery-item anim-child"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 3"></div>
+      <div class="gallery-item anim-child"><img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Foto 4"></div>
     </div>
   </div>
 
   <!-- 7. WISHES / RSVP -->
   <div class="wishes-section fade-scale" id="section-rsvp">
-    <div class="wishes-header">
+    <div class="wishes-header anim-child">
       <div class="wishes-pin"></div>
-      <div class="wishes-title">Wishes & Prayers</div>
-      <div class="wishes-sub">Tulis doa dan harapanmu untuk kami</div>
+      <div class="wishes-title">Doa dan Harapan</div>
+      <div class="wishes-sub">Silahkan tulis doa dan harapanmu untuk kami</div>
     </div>
-    <div class="wishes-form">
+    <div class="wishes-form anim-child">
       <div class="wishes-form-lbl">📝 Tulis Ucapanmu</div>
       <input type="text" class="form-input" id="rsvp-nama" placeholder="Nama kamu">
       <textarea class="form-textarea" id="rsvp-ucapan" placeholder="Tulis ucapan, doa, atau pesan untuk Purwanto & Desty Yani..."></textarea>
@@ -490,33 +534,46 @@
         Kirim Ucapan
       </button>
     </div>
-    <div class="ucapan-list scrollbar-hide" id="ucapan-list"></div>
+    <div class="ucapan-list scrollbar-hide anim-child" id="ucapan-list"></div>
+  </div>
+
+  <!-- DIVIDER 4: Wishes → Footer -->
+  <div class="botanical-divider">
+    <svg viewBox="0 0 280 36" width="240" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.45"/>
+      <circle cx="10" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+      <circle cx="55" cy="11" r="4" fill="#3A5F2A" opacity="0.6"/>
+      <circle cx="105" cy="19" r="5" fill="#C1593C" opacity="0.55"/>
+      <circle cx="140" cy="18" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="178" cy="24" r="5" fill="#C1593C" opacity="0.6"/>
+      <circle cx="225" cy="16" r="4" fill="#3A5F2A" opacity="0.55"/>
+      <circle cx="270" cy="18" r="6" fill="#C1593C" opacity="0.7"/>
+    </svg>
   </div>
 
   <!-- 8. FOOTER -->
   <div class="footer-section fade-up-slow">
-    <div class="footer-photo">
-      <!-- FIX: nama file pur-desty (bukan desty-pur) -->
-      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/pur-desty.png" alt="Purwanto & Desty Yani">
+    <div class="footer-photo anim-child-scale">
+      <img src="https://raw.githubusercontent.com/destyyani/und-nikah/main/desty-pur.png" alt="Purwanto & Desty Yani">
     </div>
-    <div class="footer-title">Thank You</div>
-    <p class="footer-text">
+    <div class="footer-title anim-child">Terimakasih</div>
+    <p class="footer-text anim-child">
       Merupakan suatu kehormatan dan kebahagiaan bagi kami<br>
       apabila Bapak/Ibu/Saudara/i berkenan hadir<br>
       dan memberikan doa restu kepada kami.
     </p>
-    <div class="arc-div">
+    <div class="arc-div anim-child">
       <svg viewBox="0 0 110 18" xmlns="http://www.w3.org/2000/svg">
         <path d="M2,15 Q27,3 50,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.6"/>
         <circle cx="55" cy="9" r="3" fill="#C1593C" opacity="0.75"/>
         <path d="M60,15 Q83,3 108,15" stroke="#3A5F2A" stroke-width="1.5" fill="none" opacity="0.6"/>
       </svg>
     </div>
-    <p class="footer-with-love">With Love,</p>
-    <div class="footer-names">Purwanto & Desty Yani</div>
-    <p class="footer-date">21 · 06 · 2026</p>
-    <span class="footer-salam">Wassalamu'alaikum Warahmatullahi Wabarakatuh</span>
-    <div class="footer-vine">
+    <p class="footer-with-love anim-child">Salam hangat,</p>
+    <div class="footer-names anim-child">Purwanto & Desty Yani</div>
+    <p class="footer-date anim-child">21 · 06 · 2026</p>
+    <span class="footer-salam anim-child">Wassalamu'alaikum Warahmatullahi Wabarakatuh</span>
+    <div class="footer-vine anim-child">
       <svg viewBox="0 0 280 36" width="260" xmlns="http://www.w3.org/2000/svg" fill="none">
         <path d="M10,18 Q70,4 140,18 Q210,32 270,18" stroke="#3A5F2A" stroke-width="1.4" opacity="0.4"/>
         <circle cx="10" cy="18" r="7" fill="#C1593C" opacity="0.7"/><circle cx="55" cy="11" r="5" fill="#3A5F2A" opacity="0.62"/>
@@ -525,7 +582,7 @@
         <circle cx="270" cy="18" r="7" fill="#C1593C" opacity="0.7"/>
       </svg>
     </div>
-    <p class="footer-copy">PURWANTO & DESTY YANI · 2026</p>
+    <p class="footer-copy anim-child">PURWANTO & DESTY YANI · 2026</p>
   </div>
 
 </div><!-- end #main -->
@@ -552,7 +609,6 @@
   import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyC29i4Rjs-aC2vz_etQPSeaaRNj8o3_kNs",
     authDomain: "und-nikah.firebaseapp.com",
@@ -561,21 +617,19 @@
     messagingSenderId: "268101619850",
     appId: "1:268101619850:web:106cd0a2fbfbf555c51d73"
   };
-
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
-  // ── Nama tamu dari URL ──
+  // Nama tamu
   const params    = new URLSearchParams(window.location.search);
   const guestName = params.get('kepada') || params.get('nama') || params.get('to') || 'Bapak/Ibu/Saudara/i';
   document.querySelectorAll('.tamu-name').forEach(el => el.textContent = guestName);
-
   window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById('rsvp-nama');
     if (el && !el.value && guestName !== 'Bapak/Ibu/Saudara/i') el.value = guestName;
   });
 
-  // ── Buka undangan ──
+  // Buka undangan
   window.openInvitation = function() {
     document.getElementById('cover').classList.add('hidden');
     document.getElementById('main').classList.add('visible');
@@ -584,28 +638,19 @@
     btn.style.display = 'flex';
     btn.style.alignItems = 'center';
     btn.style.justifyContent = 'center';
-
+    // Ayat langsung muncul saat buka
     setTimeout(() => {
       document.querySelector('.ayat-section').classList.add('visible');
       document.querySelectorAll('.ayat-section .anim-child').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), i * 180);
+        setTimeout(() => el.classList.add('visible'), 120 + i * 150);
       });
     }, 400);
-    setTimeout(() => {
-      document.querySelector('.couple-section').classList.add('visible');
-      document.querySelectorAll('.couple-section .anim-child, .couple-section .anim-child-scale').forEach((el, i) => {
-        setTimeout(() => el.classList.add('visible'), i * 180);
-      });
-    }, 700);
-
     setTimeout(initObserver, 300);
     startCountdown();
-    const music = document.getElementById('music');
-    music.volume = 0.5;
-    music.play().catch(() => {});
+    document.getElementById('music').volume = 0.5;
+    document.getElementById('music').play().catch(() => {});
   };
 
-  // ── Toggle musik ──
   window.toggleMusic = function() {
     const music = document.getElementById('music');
     const btn   = document.getElementById('music-btn');
@@ -613,66 +658,65 @@
     else { music.pause(); btn.textContent = '🔇'; }
   };
 
-  // ── Scroll nav ──
   window.scrollToSection = function(id) {
     document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' });
   };
 
-  // ── Scroll observer ──
+  // Observer dengan deteksi arah scroll
   function initObserver() {
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => { lastScrollY = window.scrollY; }, { passive:true });
+
     const sel = '.fade-in,.fade-from-left,.fade-from-right,.fade-scale,.fade-up-slow';
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
+        const goingDown = window.scrollY >= lastScrollY;
         if (e.isIntersecting) {
           e.target.classList.add('visible');
           e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible'), i * 180);
+            if (el.classList.contains('anim-child')) {
+              goingDown ? el.classList.remove('from-top') : el.classList.add('from-top');
+            }
+            setTimeout(() => el.classList.add('visible'), 100 + i * 100);
           });
         } else {
           e.target.classList.remove('visible');
-          e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach(el => el.classList.remove('visible'));
+          e.target.querySelectorAll('.anim-child, .anim-child-scale').forEach(el => {
+            el.classList.remove('visible', 'from-top');
+          });
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
     document.querySelectorAll(sel).forEach(el => obs.observe(el));
   }
 
-  // ── Countdown ──
+  // Countdown
   function startCountdown() {
     const target = new Date('2026-06-21T08:00:00');
     function update() {
       const diff = target - new Date();
-      if (diff <= 0) {
-        ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent = '00');
-        return;
-      }
-      document.getElementById('cd-hari').textContent   = String(Math.floor(diff/86400000)).padStart(2,'0');
-      document.getElementById('cd-jam').textContent    = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-      document.getElementById('cd-menit').textContent  = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-      document.getElementById('cd-detik').textContent  = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+      if (diff <= 0) { ['cd-hari','cd-jam','cd-menit','cd-detik'].forEach(id => document.getElementById(id).textContent='00'); return; }
+      document.getElementById('cd-hari').textContent  = String(Math.floor(diff/86400000)).padStart(2,'0');
+      document.getElementById('cd-jam').textContent   = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+      document.getElementById('cd-menit').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+      document.getElementById('cd-detik').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
     }
     update(); setInterval(update, 1000);
   }
 
-  // ── Kalender ──
   window.addToCalendar = function() {
     window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Purwanto+%26+Desty+Yani&dates=20260621T010000Z/20260621T080000Z&details=Pernikahan+Purwanto+%26+Desty+Yani&location=Jl.+Gandaria+1,+Pangkalpinang','_blank');
   };
 
-  // ── Toast ──
   window.showToast = function(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2800);
   };
 
-  // ══════════════════════════════
-  //  FIREBASE — Render ucapan realtime
-  // ══════════════════════════════
-  const ucapanCol = collection(db, 'ucapan');
+  // Firebase realtime ucapan
+  const ucapanCol   = collection(db, 'ucapan');
   const ucapanQuery = query(ucapanCol, orderBy('timestamp', 'desc'));
-
-  // Listen realtime — update otomatis saat ada ucapan baru
   onSnapshot(ucapanQuery, (snapshot) => {
     const list = document.getElementById('ucapan-list');
     if (snapshot.empty) {
@@ -680,11 +724,11 @@
       return;
     }
     const hadirLabel = { hadir:'✅ Akan Hadir', tidak:'❌ Tidak Dapat Hadir', mungkin:'🌿 Insya Allah Hadir' };
+    const colors = ['#FFF9C4','#C8E6C9','#FFE0CC','#E1D5F0'];
+    const rots   = ['-0.8deg','0.6deg','-0.5deg','0.8deg'];
     list.innerHTML = snapshot.docs.map((doc, i) => {
       const u = doc.data();
-      const cls = ['#FFF9C4','#C8E6C9','#FFE0CC','#E1D5F0'][i % 4];
-      const rot = ['-0.8deg','0.6deg','-0.5deg','0.8deg'][i % 4];
-      return `<div class="ucapan-item" style="background:${cls};transform:rotate(${rot})">
+      return `<div class="ucapan-item" style="background:${colors[i%4]};transform:rotate(${rots[i%4]})">
         <div class="ucapan-name">${u.nama}</div>
         <div class="ucapan-msg">${u.ucapan}</div>
         <div class="ucapan-status">${hadirLabel[u.hadir] || ''}</div>
@@ -692,17 +736,15 @@
     }).join('');
   });
 
-  // ── Submit RSVP ke Firebase ──
+  // Submit RSVP
   window.submitRSVP = async function() {
     const nama   = document.getElementById('rsvp-nama').value.trim();
     const ucapan = document.getElementById('rsvp-ucapan').value.trim();
     const hadir  = document.getElementById('rsvp-hadir').value;
     if (!nama || !ucapan || !hadir) { showToast('Lengkapi semua isian.'); return; }
-
     const btn = document.querySelector('.btn-kirim');
     btn.disabled = true;
     btn.innerHTML = '⏳ Mengirim...';
-
     try {
       await addDoc(ucapanCol, { nama, ucapan, hadir, timestamp: serverTimestamp() });
       document.getElementById('rsvp-nama').value   = '';
@@ -711,7 +753,6 @@
       showToast('Ucapan terkirim ✿');
     } catch (err) {
       showToast('Gagal mengirim, coba lagi.');
-      console.error(err);
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M2,21L23,12 2,3 2,10 17,12 2,14Z"/></svg> Kirim Ucapan';
