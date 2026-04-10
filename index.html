@@ -193,7 +193,7 @@
     transform:translateY(32px);
     transition: opacity 1.3s cubic-bezier(0.16,1,0.3,1),
                 transform 1.3s cubic-bezier(0.16,1,0.3,1);
-    transition-delay: 0.25s;
+    transition-delay: 0.4s;
   }
   .fade-in.visible,.fade-from-left.visible,.fade-from-right.visible,
   .fade-scale.visible,.fade-up-slow.visible { opacity:1; transform:none }
@@ -686,7 +686,7 @@
           });
         }
       });
-    }, { threshold: 0.25, rootMargin: '0px 0px -80px 0px' });
+    }, { threshold: 0.35, rootMargin: '0px 0px -120px 0px' });
     document.querySelectorAll(sel).forEach(el => obs.observe(el));
   }
 
